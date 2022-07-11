@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/api/v1/appointment")
 public class AppointmentController {
 
     @Autowired
     private AppointmentRespository appointmentRespository;
 
-    @PostMapping("/")
+    @PostMapping(consumes = {"application/json"})
     public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment){
         Appointment save = this.appointmentRespository.save(appointment);
         return ResponseEntity.ok(save);

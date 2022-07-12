@@ -1,33 +1,28 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
 import java.util.UUID;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Document(collection = "Appointments")
 public class Appointment {
-    private Integer appointmentID;
+    private UUID appointmentID;
+    private UUID userID;
     private String appointmentName;
+    private String appointmentType;
+    private String appointmentDescription;
+    private String startTime;
+    private String endTime;
+    private String metaData;
 
-    public Appointment(Integer appointmentID, String appointmentName) {
-        this.appointmentID = appointmentID;
-        this.appointmentName = appointmentName;
-    }
 
-    public Integer getAppointmentID() {
-        return appointmentID;
-    }
 
-    public void setAppointmentID(Integer appointmentID) {
-        this.appointmentID = appointmentID;
-    }
-
-    public String getAppointmentName() {
-        return appointmentName;
-    }
-
-    public void setAppointmentName(String appointmentName) {
-        this.appointmentName = appointmentName;
-    }
 }

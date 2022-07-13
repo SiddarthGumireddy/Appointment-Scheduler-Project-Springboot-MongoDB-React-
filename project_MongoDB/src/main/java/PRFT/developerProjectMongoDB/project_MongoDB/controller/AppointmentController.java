@@ -46,12 +46,16 @@ public class AppointmentController {
             createAppointment(newAppt.get(i));
         }
 
-        return "Appointment with appointment ID: has been deleted successfully.";
+        return "Appointment with appointment ID:" + apptID.toString()+ " has been deleted successfully.";
     }
 
     @PutMapping("/UpdateAppointment/{apptID}")
-    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, UUID apptID) {
-        appointmentRespository.deleteById((apptID));
+    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, @PathVariable("apptID") UUID apptID) {
+        List<Appointment> newAppt = this.appointmentRespository.getAllExcept(apptID);
+        appointmentRespository.deleteAll();
+        for(int i = 0; i < newAppt.size(); i++){
+            createAppointment(newAppt.get(i));
+        }
         Appointment save = this.appointmentRespository.save(appointment);
         return ResponseEntity.ok(save);
     }

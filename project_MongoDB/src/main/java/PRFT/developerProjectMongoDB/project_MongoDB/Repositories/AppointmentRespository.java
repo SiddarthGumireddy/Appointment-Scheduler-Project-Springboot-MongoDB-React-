@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface AppointmentRespository extends MongoRepository<Appointment, UUID> {
+public interface AppointmentRespository extends MongoRepository<Appointment, UUID>  {
 
 
     default Appointment findByApptID(UUID id){ //Returns Appointment Entity with the given AppointmenID

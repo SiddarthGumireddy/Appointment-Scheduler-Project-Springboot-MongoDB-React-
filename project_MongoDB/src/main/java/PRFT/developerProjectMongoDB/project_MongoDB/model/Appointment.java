@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
@@ -14,8 +15,10 @@ import java.util.UUID;
 @Builder
 @Document(collection = "Appointments")
 public class Appointment {
+    @Id
     private UUID appointmentID;
     private UUID userID;
+    private UUID userName;
     private String appointmentName;
     private String appointmentType;
     private String appointmentDescription;

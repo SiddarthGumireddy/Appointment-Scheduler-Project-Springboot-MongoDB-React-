@@ -43,29 +43,21 @@ public class AppointmentController {
         return ResponseEntity.ok(this.appointmentRespository.findAll());
     }
 
-    @GetMapping({"/GetOne/{apptID}"}) //Get one Appointment by ID
-    public ResponseEntity<?> getAppointment(@PathVariable("apptID") UUID apptID) {
-        return ResponseEntity.ok(this.appointmentRespository.findByApptID(apptID));
+    @GetMapping("/GetOne/{id}") //Get one Appointment by ID
+    public Optional<Appointment> getAppointment(@PathVariable UUID id) {
+        return appointmentRespository.findById(id);
     }
 
-    @DeleteMapping({"/DeleteOne/{apptID}"}) //Delete one Appointment by ID
-    public String deleteAppointment(@PathVariable("apptID") UUID apptID) {
-        List<Appointment> newAppt = this.appointmentRespository.getAllExcept(apptID);
-        appointmentRespository.deleteAll();
-        for(int i = 0; i < newAppt.size(); i++){
-            createAppointment(newAppt.get(i));
-        }
+    @DeleteMapping("/DeleteOne/{id}") //Delete one Appointment by ID
+    public String deleteAppointment(@PathVariable UUID id) {
+        appointmentRespository.deleteById(id);
 
-        return "Appointment with appointment ID:" + apptID.toString()+ " has been deleted successfully.";
+        return "Appointment with appointment ID:" + id.toString()+ " has been deleted successfully.";
     }
 
-    @PutMapping("/UpdateAppointment/{apptID}")
-    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, @PathVariable("apptID") UUID apptID) {
-        List<Appointment> newAppt = this.appointmentRespository.getAllExcept(apptID);
-        appointmentRespository.deleteAll();
-        for(int i = 0; i < newAppt.size(); i++){
-            createAppointment(newAppt.get(i));
-        }
+    @PutMapping("/UpdateAppointment/{id}")
+    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, @PathVariable() UUID id) {
+        appointmentRespository.deleteById(id);
         Appointment save = this.appointmentRespository.save(appointment);
         return ResponseEntity.ok(save);
     }

@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequestMapping("/api/v1/appointment")
 @RestController
@@ -31,34 +28,51 @@ public class AppointmentController {
     @PostMapping("/Add/") //Add an Appointment to the DB
     public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
         Appointment save = this.appointmentRespository.save(appointment);
-        /*UUID newUserID = save.getUserID();
-        Optional<User> currentUser = this.repository.findById(newUserID);
-        List<Appointment> currentUserApptList = currentUser.get().getUserApptList();
-        currentUserApptList.add(s);*/
+        if(appointment.getAppointmentID()==null){
+            save.setAppointmentID(this.appointmentRespository.generateLong());
+        }
+        if(save == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok(save);
     }
 
     @GetMapping("/List/") //List All Appointments
     public ResponseEntity<?> getAllAppointments() {
+        if(this.appointmentRespository.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(this.appointmentRespository.findAll());
     }
 
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
-    public Optional<Appointment> getAppointment(@PathVariable UUID id) {
-        return appointmentRespository.findById(id);
+    public ResponseEntity<?> getAppointment(@PathVariable Long id) {
+        if (this.appointmentRespository.UUIDExists(id)) {
+            Optional<Appointment> newAppt = appointmentRespository.findById(id);
+            if (newAppt == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(newAppt);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/DeleteOne/{id}") //Delete one Appointment by ID
-    public String deleteAppointment(@PathVariable UUID id) {
-        appointmentRespository.deleteById(id);
-
-        return "Appointment with appointment ID:" + id.toString()+ " has been deleted successfully.";
+    public String deleteAppointment(@PathVariable Long id) {
+        if (this.appointmentRespository.UUIDExists(id)) {
+            appointmentRespository.deleteById(id);
+            return "Appointment with appointment ID:" + id.toString() + " has been deleted successfully.";
+        }
+        return "Invalid Appointment ID - doesn't exist";
     }
 
     @PutMapping("/UpdateAppointment/{id}")
-    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, @PathVariable() UUID id) {
-        appointmentRespository.deleteById(id);
-        Appointment save = this.appointmentRespository.save(appointment);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment, @PathVariable() Long id) {
+        if (this.appointmentRespository.UUIDExists(id)) {
+            appointmentRespository.deleteById(id);
+            Appointment save = this.appointmentRespository.save(appointment);
+            return ResponseEntity.ok(save);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

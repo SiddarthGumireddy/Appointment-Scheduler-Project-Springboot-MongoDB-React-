@@ -5,6 +5,7 @@ import AppointmentList from "./components/AppointmentList";
 import UserList from "./components/UserList";
 import Home from "./components/Home";
 import Appointment from "./components/Appointment";
+import Update from "./components/Update";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Col lg={12} style={marginTop}>
                 <Routes>
                     <Route exact path = "/" element={<Home/>}/>
+                    <Route exact path = "/Edit/:appointmentID" element={<Update/>}/>
                     <Route exact path = "/UserList" element={<UserList/>}/>
                     <Route exact path = "/AppointmentList" element={<AppointmentList/>}/>
                     <Route exact path = "/Appointment" element={<Appointment/>}/>

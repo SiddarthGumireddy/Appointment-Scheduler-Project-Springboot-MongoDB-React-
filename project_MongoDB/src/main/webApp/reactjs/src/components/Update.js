@@ -16,6 +16,7 @@ export default class Appointment extends Component{
         event.preventDefault();
 
         const appointment = {
+            appointmentID:this.state.AID,
             userEmail:this.state.AEmail,
             appointmentName:this.state.AName,
             appointmentType:this.state.AType,
@@ -25,11 +26,11 @@ export default class Appointment extends Component{
             endTime:this.state.AEnd
         };
 
-        axios.post("http://localhost:8082/api/v1/appointment/Add/", appointment)
+        axios.put("http://localhost:8082/api/v1/appointment/UpdateAppointment/"+appointment.appointmentID, appointment)
             .then(response => {
                 if(response.data != null){
-                    this.setState({userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''});
-                    alert("Appointment saved successfully!");
+                    this.setState({appointmentID:'',userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''});
+                    alert("Appointment updated successfully!");
                 }
             })
     };
@@ -43,9 +44,14 @@ export default class Appointment extends Component{
     render() {
         return (
             <Card className="border border-dark bg-dark text-white">
-                <Card.Header>Add an Appointment</Card.Header>
+                <Card.Header>Update an Appointment</Card.Header>
                 <Card.Body>
                     <Form onSubmit={this.submitAppointment} id ="AppointmentFormID">
+                        <Form.Group className="mb-3" controlId="formBasicText">
+                            <Form.Label>Appointment ID</Form.Label>
+                            <Form.Control required type="text" name = "AID" value={this.state.AID}
+                                          onChange={this.AppointmentChange} placeholder="Enter ID" />
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>User Email</Form.Label>
                             <Form.Control required type="email" name = "AEmail" value={this.state.AEmail}
@@ -83,7 +89,7 @@ export default class Appointment extends Component{
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Add
+                            Update
                         </Button>
                     </Form>
                 </Card.Body>

@@ -11,7 +11,6 @@ export default class Appointment extends Component{
         this.submitAppointment = this.submitAppointment.bind(this);
     }
 
-
     submitAppointment(event){
         event.preventDefault();
 

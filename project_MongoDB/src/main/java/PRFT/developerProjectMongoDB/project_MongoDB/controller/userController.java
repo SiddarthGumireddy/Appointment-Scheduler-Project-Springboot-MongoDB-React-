@@ -32,23 +32,21 @@ public class userController {
         return this.repository.findAll();
     }
     @GetMapping("/getUserById/{id}")
-    public Optional<User> getUserById(@PathVariable UUID id){
+    public Optional<User> getUserById(@PathVariable Long id){
         return repository.findById(id);
     }
     @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable UUID id){
+    public String deleteUser(@PathVariable Long id){
         repository.deleteById(id);
         return "User with UserID:" + id +" has been deleted!";
     }
-
-
-//    public userController(UserServices userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping({"/{userID"})
-//    public ResponseEntity<user> getUser(@PathVariable("customerId")  UUID userId){
-//
-//        return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
-//    }
+    @PutMapping("/UpdateUser/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable() Long id,@RequestBody User user) {
+        if (repository.UUIDExists(id)) {
+            repository.deleteById(id);
+            User save = repository.save(user);
+            return ResponseEntity.ok(save);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

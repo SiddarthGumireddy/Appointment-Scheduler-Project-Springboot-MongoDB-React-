@@ -18,13 +18,13 @@ import java.util.UUID;
 @Document(collection = "Users")
 public class User {
     @Id
-    private UUID userID;
+    private Long userID;
     private String firstName;
     private String lastName;
     private String gender;
     private Integer age;
     private String emailID;
-    private Long phoneNumber;
+    private String phoneNumber;
 
 
 }

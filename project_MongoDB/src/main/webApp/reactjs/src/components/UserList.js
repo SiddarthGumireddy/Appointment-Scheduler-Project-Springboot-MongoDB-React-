@@ -54,14 +54,15 @@ class UserList extends React.Component{
                             <th className="text-white">Gender</th>
                             <th className="text-white">Email</th>
                             <th className="text-white">Phone</th>
+                            <th className="text-white">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {this.state.users.length === 0 ?
                             <tr align="center">
-                                <td colSpan="9"> No Users Scheduled</td>
+                                <td colSpan="8"> No Users Scheduled</td>
                             </tr> :
-                            this.state.users.map((users)=> (
+                            this.state.users.map((user)=> (
                                 <tr key ={user.userID}>
                                     <td>{user.userID}</td>
                                     <td>{user.firstName}</td>

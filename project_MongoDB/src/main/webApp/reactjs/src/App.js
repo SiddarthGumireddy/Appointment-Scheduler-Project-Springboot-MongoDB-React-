@@ -7,6 +7,8 @@ import Home from "./components/Home";
 import Appointment from "./components/Appointment";
 import Update from "./components/Update";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import User from "./components/User";
+import UserUpdate from "./components/UserUpdate";
 
 function App() {
     const marginTop = {marginTop:"20px"};
@@ -22,6 +24,8 @@ function App() {
                     <Route exact path = "/UserList" element={<UserList/>}/>
                     <Route exact path = "/AppointmentList" element={<AppointmentList/>}/>
                     <Route exact path = "/Appointment" element={<Appointment/>}/>
+                    <Route exact path = "/User" element={<User/>}/>
+                    <Route exact path = "/Edit/:userID" element={<UserUpdate/>}/>
                 </Routes>
                 </Col>
             </Row>

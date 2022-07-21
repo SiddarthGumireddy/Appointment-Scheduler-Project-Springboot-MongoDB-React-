@@ -17,7 +17,7 @@ class UserList extends React.Component{
     }
 
     findAllUsers(){
-        axios.get("http://localhost:8082/api/v1/user/List/")
+        axios.get("http://localhost:8082/api/v1/user/ListAllUsers/")
             .then((response)=>response.data)
             .then((data) => {
                 this.setState({users:data});
@@ -25,7 +25,7 @@ class UserList extends React.Component{
     }
 
     deleteUser = (userID) =>{
-        axios.delete("http://localhost:8082/api/v1/user/DeleteOne/"+userID)
+        axios.delete("http://localhost:8082/api/v1/user/delete/"+userID)
             .then(response =>{
                 if (response.data != null){
                     alert("user with ID: "+userID + " deleted successfully")

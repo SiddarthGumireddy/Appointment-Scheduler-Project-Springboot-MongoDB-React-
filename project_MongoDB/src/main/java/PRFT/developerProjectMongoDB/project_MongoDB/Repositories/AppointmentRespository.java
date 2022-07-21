@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3001")
 public interface AppointmentRespository extends MongoRepository<Appointment, Long>  {
 
     default Boolean isEmpty(){
@@ -55,6 +55,17 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         return AllAppointments.get(0); //change this to none
     }
 
+    default Appointment findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
+        List<Appointment> AllAppointments= this.findAll();
+        for (int i = 0; i < AllAppointments.size(); i++){
+            Appointment newOne = AllAppointments.get(i);
+            if (newOne.getUserEmail().equals(emailID)){
+                return newOne;
+
+            }
+        }
+        return AllAppointments.get(0); //change this to none
+    }
     default Boolean apptIDExists(UUID id){ //Returns True if ApptID exists in database and False otherwise
         List<Appointment> AllAppointments= this.findAll();
         for (int i = 0; i < AllAppointments.size(); i++){

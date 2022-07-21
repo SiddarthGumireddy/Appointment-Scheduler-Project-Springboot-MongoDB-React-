@@ -25,7 +25,7 @@ function App() {
                     <Route exact path = "/AppointmentList" element={<AppointmentList/>}/>
                     <Route exact path = "/Appointment" element={<Appointment/>}/>
                     <Route exact path = "/User" element={<User/>}/>
-                    <Route exact path = "/Edit/:userID" element={<UserUpdate/>}/>
+                    <Route exact path = "/EditU/:userID" element={<UserUpdate/>}/>
                 </Routes>
                 </Col>
             </Row>

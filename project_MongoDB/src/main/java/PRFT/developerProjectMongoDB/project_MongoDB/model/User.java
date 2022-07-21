@@ -9,8 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
-@Getter
-@Setter
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -25,6 +24,4 @@ public class User {
     private String age;
     private String emailID;
     private String phoneNumber;
-
-
 }

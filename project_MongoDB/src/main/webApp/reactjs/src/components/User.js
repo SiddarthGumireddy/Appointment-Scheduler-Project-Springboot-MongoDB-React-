@@ -19,8 +19,8 @@ export default class User extends Component{
 
             firstName:this.state.UFirstName,
             lastName:this.state.ULastName,
-            gender:this.state.Ugender,
-            age:this.state.Uage,
+            gender:this.state.UGender,
+            age:this.state.UAge,
             emailID:this.state.UEmail,
             phoneNumber:this.state.UPhone,
         };

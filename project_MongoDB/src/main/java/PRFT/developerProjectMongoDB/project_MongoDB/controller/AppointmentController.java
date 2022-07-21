@@ -16,7 +16,7 @@ import java.util.*;
 
 @RequestMapping("/api/v1/appointment")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3001")
 public class AppointmentController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class AppointmentController {
 
 
     @PostMapping("/Add/") //Add an Appointment to the DB
-    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
         if(appointment.getAppointmentID()==null){
             appointment.setAppointmentID(this.appointmentRespository.generateLong());
         }
@@ -38,7 +38,7 @@ public class AppointmentController {
         }
         return ResponseEntity.ok(save);
     }
-
+//jsr303
     @GetMapping("/List/") //List All Appointments
     public ResponseEntity<?> getAllAppointments() {
         if(this.appointmentRespository.isEmpty()){
@@ -46,6 +46,8 @@ public class AppointmentController {
         }
         return ResponseEntity.ok(this.appointmentRespository.findAll());
     }
+
+
 
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
     public ResponseEntity<?> getAppointment(@PathVariable Long id) {

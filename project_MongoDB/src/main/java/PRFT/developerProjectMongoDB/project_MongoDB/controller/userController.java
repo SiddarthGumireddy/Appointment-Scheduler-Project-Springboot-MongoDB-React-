@@ -23,9 +23,15 @@ public class userController {
     @Autowired
     private UserRepository repository;
     @PostMapping("/addUser")
-    //Add an Appointment to the DB
+//Add an Appointment to the DB
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        User save = this.repository.save(user);
+        if(user.getUserID()==null){
+            user.setUserID(repository.generateLong());
+        }
+        User save = repository.save(user);
+        if(save == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok(save);
     }
     @GetMapping("/ListAllUsers")
@@ -35,6 +41,10 @@ public class userController {
     @GetMapping("/getUserById/{id}")
     public Optional<User> getUserById(@PathVariable Long id){
         return repository.findById(id);
+    }
+    @GetMapping("/getUserByEId/{id}")
+    public User getUserById(@PathVariable String id){
+        return repository.findByEmail(id);
     }
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id){

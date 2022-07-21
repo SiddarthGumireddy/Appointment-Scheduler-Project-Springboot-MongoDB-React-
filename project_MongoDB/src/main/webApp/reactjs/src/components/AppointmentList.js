@@ -47,7 +47,7 @@ class AppointmentList extends React.Component{
                     <Table bordered hover striped variant="dark">
                         <thead>
                         <tr>
-                            <th className="text-white">ID</th>
+
                             <th className="text-white">User Email</th>
                             <th className="text-white">Appointment Name</th>
                             <th className="text-white">Appointment Type</th>
@@ -61,11 +61,11 @@ class AppointmentList extends React.Component{
                         <tbody>
                         {this.state.appointments.length === 0 ?
                                 <tr align="center">
-                                    <td colSpan="9"> No Appointments Scheduled</td>
+                                    <td colSpan="8"> No Appointments Scheduled</td>
                                 </tr> :
                                 this.state.appointments.map((appointment)=> (
                                     <tr key ={appointment.appointmentID}>
-                                        <td>{appointment.appointmentID}</td>
+
                                         <td>{appointment.userEmail}</td>
                                         <td>{appointment.appointmentName}</td>
                                         <td>{appointment.appointmentType}</td>

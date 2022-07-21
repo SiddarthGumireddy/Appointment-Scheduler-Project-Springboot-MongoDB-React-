@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import {Link} from "react-router-dom";
 //import app from "../App";
+import UserUpdate from "../components/UserUpdate";
 class UserList extends React.Component{
     constructor(props) {
         super(props);
@@ -47,11 +48,11 @@ class UserList extends React.Component{
                     <Table bordered hover striped variant="dark">
                         <thead>
                         <tr>
-                            <th className="text-white">ID</th>
+
                             <th className="text-white">Firstname</th>
                             <th className="text-white">Lastname</th>
-                            <th className="text-white">Age</th>
                             <th className="text-white">Gender</th>
+                            <th className="text-white">Age</th>
                             <th className="text-white">Email</th>
                             <th className="text-white">Phone</th>
                             <th className="text-white">Actions</th>
@@ -64,15 +65,22 @@ class UserList extends React.Component{
                             </tr> :
                             this.state.users.map((user)=> (
                                 <tr key ={user.userID}>
-                                    <td>{user.userID}</td>
+                                    {/*<td type={"hidden"}>{user.userID}</td>*/}
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
+                                    <td>{user.gender}</td>
                                     <td>{user.age}</td>
                                     <td>{user.emailID}</td>
                                     <td>{user.phoneNumber}</td>
                                     <td>
                                         <ButtonGroup>
-                                            <Link to={"/Edit/"+user.userID} className="btn btn -sm btn-outline-primary">Update</Link>
+                                            {/*<Link to={"/EditU/"+user.userID} className="btn btn -sm btn-outline-primary"*/}
+                                            {/*      onClick={UserUpdate.helpID.bind(this, user.userID)}>Update</Link>*/}
+                                            <Button href={"/EditU/"+user.userID}
+                                                    // onClick={UserUpdate.helpID.bind(this, user.userID)}
+                                                    value={user.userID}
+                                                    id={"updateButton"}>Update
+                                                    </Button>
                                             <Button variant={"danger"} onClick={this.deleteUser.bind(this, user.userID)}>
                                                 Delete
                                             </Button>{''}

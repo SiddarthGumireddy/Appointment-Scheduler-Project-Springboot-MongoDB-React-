@@ -4,9 +4,10 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 export default class Appointment extends Component{
+    APPTID= (window.location.href.slice(27));
     constructor(props) {
         super(props);
-        this.state = {appointmentID:'',userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''};
+        this.state = {appointmentID:this.APPTID,userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''};
         this.AppointmentChange = this.AppointmentChange.bind(this);
         this.submitAppointment = this.submitAppointment.bind(this);
     }
@@ -15,7 +16,7 @@ export default class Appointment extends Component{
         event.preventDefault();
 
         const appointment = {
-            appointmentID:this.state.AID,
+            appointmentID:this.APPTID,
             userEmail:this.state.AEmail,
             appointmentName:this.state.AName,
             appointmentType:this.state.AType,
@@ -28,7 +29,7 @@ export default class Appointment extends Component{
         axios.put("http://localhost:8082/api/v1/appointment/UpdateAppointment/"+appointment.appointmentID, appointment)
             .then(response => {
                 if(response.data != null){
-                    this.setState({appointmentID:'',userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''});
+                    this.setState({appointmentID:this.APPTID,userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''});
                     alert("Appointment updated successfully!");
                 }
             })
@@ -48,7 +49,7 @@ export default class Appointment extends Component{
                     <Form onSubmit={this.submitAppointment} id ="AppointmentFormID">
                         <Form.Group className="mb-3" controlId="formBasicText">
                             <Form.Label>Appointment ID</Form.Label>
-                            <Form.Control required type="text" name = "AID" value={this.state.AID}
+                            <Form.Control required type="hidden" name = "AID" value={this.APPTID}
                                           onChange={this.AppointmentChange} placeholder="Enter ID" />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicEmail">

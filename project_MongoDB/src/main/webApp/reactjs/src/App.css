@@ -12,9 +12,12 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.Nav2{
+  background-color: #931919;
+  height: 60px;
+}
 .App-header {
-  background-color: #282c34;
+  background-color: #ff0000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

@@ -1,22 +1,26 @@
 import React from "react";
 import {Navbar, Nav} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import logo from '../Img/PRFT2.png';
 
 
 class NavigationBar extends React.Component {
+
     render() {
+
         return (
-            <Navbar bg="primary" variant="dark">
+            <Navbar variant="dark" style={{ height: 60, backgroundColor:"#931919"}}>
                 <Link to={"/"} className = "navbar-brand">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Book_icon_1.png" width="25" height="25" alt="brand"/>PRFT Scheduler
+                    <img src={logo} width="100" height="65" alt="brand" padding-right="10"/>Scheduler
                 </Link>
 
-                <Nav className="me-auto">
-                    <Link to={"/UserList"} className="nav-link">Manage Users</Link>
+                <Nav className="me-auto" style={{ height: 43 }}>
+                    <Link to={"/UserList"} className="nav-link" >Manage Users</Link>
                     <Link to={"/AppointmentList"} className="nav-link">Manage Appointments</Link>
                 </Nav>
             </Navbar>
         );
     }
+
 }
 export default NavigationBar;

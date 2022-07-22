@@ -41,6 +41,8 @@ export default class Appointment extends Component{
         });
     }
 
+
+
     render() {
         return (
             <Card className="border border-dark bg-dark text-white">
@@ -48,7 +50,7 @@ export default class Appointment extends Component{
                 <Card.Body>
                     <Form onSubmit={this.submitAppointment} id ="AppointmentFormID">
                         <Form.Group className="mb-3" controlId="formBasicText">
-                            <Form.Label>Appointment ID</Form.Label>
+                            <Form.Label >Appointment ID : {this.APPTID}</Form.Label>
                             <Form.Control required type="hidden" name = "AID" value={this.APPTID}
                                           onChange={this.AppointmentChange} placeholder="Enter ID" />
                         </Form.Group>

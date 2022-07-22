@@ -22,6 +22,19 @@ public interface UserRepository extends MongoRepository<User, Long> {
 
     }
 
+    default Boolean userExists(String emailID){
+        List<User> AllUsers = this.findAll();
+        for (int i = 0; i < AllUsers.size(); i++) {
+            User newOne = AllUsers.get(i);
+            if (newOne.getUserID().equals(emailID)) {
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+
     default User findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
         List<User> AllAppointments= this.findAll();
         for (int i = 0; i < AllAppointments.size(); i++){

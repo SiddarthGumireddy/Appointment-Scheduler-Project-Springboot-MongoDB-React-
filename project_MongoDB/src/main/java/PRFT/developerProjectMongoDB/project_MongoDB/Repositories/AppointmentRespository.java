@@ -1,6 +1,7 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.Repositories;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,7 +11,8 @@ import java.util.Random;
 import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:3001")
-public interface AppointmentRespository extends MongoRepository<Appointment, Long>  {
+public interface AppointmentRespository extends MongoRepository<Appointment, Long>{
+
 
     default Boolean isEmpty(){
         List<Appointment> AllAppointments= this.findAll();
@@ -19,6 +21,8 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         }
         return false;
     }
+
+
 
     default Boolean UUIDExists(Long id){
         List<Appointment> AllAppointments= this.findAll();
@@ -42,6 +46,8 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         }
         return newLong;
     }
+    
+
 
     default Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmenID
         List<Appointment> AllAppointments= this.findAll();

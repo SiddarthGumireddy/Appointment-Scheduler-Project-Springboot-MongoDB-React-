@@ -82,7 +82,7 @@ export default class Appointment extends Component{
                                           onChange={this.AppointmentChange} placeholder="Appointment Name" />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" >
                             Add
                         </Button>
                     </Form>

@@ -2,9 +2,8 @@ import React from "react";
 import {ButtonGroup, Card, Form, Table} from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
-import {Link} from "react-router-dom";
-//import app from "../App";
-import UserUpdate from "../components/UserUpdate";
+
+
 class UserList extends React.Component{
     constructor(props) {
         super(props);

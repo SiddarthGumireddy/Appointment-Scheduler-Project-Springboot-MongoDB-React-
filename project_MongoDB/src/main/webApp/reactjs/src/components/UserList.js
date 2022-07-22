@@ -75,11 +75,12 @@ class UserList extends React.Component{
                                         <ButtonGroup>
                                             {/*<Link to={"/EditU/"+user.userID} className="btn btn -sm btn-outline-primary"*/}
                                             {/*      onClick={UserUpdate.helpID.bind(this, user.userID)}>Update</Link>*/}
-                                            <Button href={"/EditU/"+user.userID}
+                                            <Button variant={"success"} href={"/EditU/"+user.userID}
                                                     // onClick={UserUpdate.helpID.bind(this, user.userID)}
                                                     value={user.userID}
                                                     id={"updateButton"}>Update
                                                     </Button>
+
                                             <Button variant={"danger"} onClick={this.deleteUser.bind(this, user.userID)}>
                                                 Delete
                                             </Button>{''}
@@ -90,7 +91,7 @@ class UserList extends React.Component{
                         }
                         </tbody>
                     </Table>
-                    <Form ><Button href="/User">Add User</Button></Form>
+                    <Form ><Button variant={"danger"} href="/User">Add User</Button></Form>
                 </Card.Body>
 
 

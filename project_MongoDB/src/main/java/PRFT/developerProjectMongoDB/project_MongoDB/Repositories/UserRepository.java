@@ -24,13 +24,14 @@ public interface UserRepository extends MongoRepository<User, Long> {
 
     default Boolean userExists(String emailID){
         List<User> AllUsers = this.findAll();
+        Boolean yesorno = false;
         for (int i = 0; i < AllUsers.size(); i++) {
             User newOne = AllUsers.get(i);
-            if (newOne.getUserID().equals(emailID)) {
-                return true;
+            if (newOne.getEmailID().equals(emailID)) {
+                yesorno = true;
             }
         }
-        return false;
+        return yesorno;
 
 
     }

@@ -75,7 +75,7 @@ class AppointmentList extends React.Component{
                                         <td>{appointment.endTime}</td>
                                         <td>
                                             <ButtonGroup>
-                                                <Link to={"/Edit/"+appointment.appointmentID} className="btn btn -sm btn-outline-primary">Update</Link>
+                                                <Link  to={"/Edit/"+appointment.appointmentID} className="btn btn -sm btn-outline-success">Update</Link>
                                                 <Button variant={"danger"} onClick={this.deleteAppointment.bind(this, appointment.appointmentID)}>
                                                     Delete
                                                 </Button>{''}
@@ -86,7 +86,7 @@ class AppointmentList extends React.Component{
                         }
                         </tbody>
                     </Table>
-                    <Form ><Button href="/Appointment">Add an Appointment</Button></Form>
+                    <Form ><Button variant={"danger"} href="/Appointment">Add an Appointment</Button></Form>
                 </Card.Body>
 
 

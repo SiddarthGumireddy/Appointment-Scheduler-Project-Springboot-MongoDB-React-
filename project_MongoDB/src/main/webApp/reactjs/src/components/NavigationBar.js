@@ -11,7 +11,7 @@ class NavigationBar extends React.Component {
         return (
             <Navbar variant="dark" style={{ height: 60, backgroundColor:"#931919"}}>
                 <Link to={"/"} className = "navbar-brand">
-                    <img src={logo} width="100" height="65" alt="brand" padding-right="10"/>Scheduler
+                    <img src={logo} width="100" height="75" alt="brand" padding-top="inherit"/>Scheduler
                 </Link>
 
                 <Nav className="me-auto" style={{ height: 43 }}>

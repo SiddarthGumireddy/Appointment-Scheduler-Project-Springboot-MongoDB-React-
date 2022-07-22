@@ -28,10 +28,11 @@ public class AppointmentController {
 
     @PostMapping("/Add/") //Add an Appointment to the DB
     public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
+        if(this.repository.userExists(appointment.getUserEmail())) {
         if(appointment.getAppointmentID()==null){
             appointment.setAppointmentID(this.appointmentRespository.generateLong());
         }
-        if(repository.userExists(appointment.getUserEmail())) {
+
             Appointment save = this.appointmentRespository.save(appointment);
 
             if (save == null) {

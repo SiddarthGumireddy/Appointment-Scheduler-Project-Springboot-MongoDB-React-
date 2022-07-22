@@ -21,6 +21,13 @@ public interface UserRepository extends MongoRepository<User, Long> {
         return false;
 
     }
+    default Boolean isEmpty(){
+        List<User> AllUsers= this.findAll();
+        if (AllUsers.isEmpty()){
+            return true;
+        }
+        return false;
+    }
 
     default Boolean userExists(String emailID){
         List<User> AllUsers = this.findAll();

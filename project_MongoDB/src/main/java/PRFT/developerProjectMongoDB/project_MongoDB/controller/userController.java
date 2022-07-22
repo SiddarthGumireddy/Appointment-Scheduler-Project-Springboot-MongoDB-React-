@@ -35,21 +35,43 @@ public class userController {
         return ResponseEntity.ok(save);
     }
     @GetMapping("/ListAllUsers")
-    public List<User>ListUsers(){
-        return this.repository.findAll();
+    public ResponseEntity<?>ListUsers(){
+        if(this.repository.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(this.repository.findAll());
     }
     @GetMapping("/getUserById/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
-        return repository.findById(id);
+    public ResponseEntity<?> getUserById(@PathVariable Long id){
+
+        if (this.repository.UUIDExists(id)) {
+            Optional<User> user = repository.findById(id);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(user);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @GetMapping("/getUserByEId/{id}")
-    public User getUserById(@PathVariable String id){
-        return repository.findByEmail(id);
+    public ResponseEntity<?> getUserByEId(@PathVariable String id){
+        if (this.repository.userExists(id)) {
+            User user = repository.findByEmail(id);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(user);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id){
-        repository.deleteById(id);
-        return "User with UserID:" + id +" has been deleted!";
+        if (this.repository.UUIDExists(id)) {
+            repository.deleteById(id);
+            return "User with UserID:" + id + " has been deleted!";
+        }
+        return "Invalid User ID, Please Try Again!";
     }
     @PutMapping("/UpdateUser/{id}")
     public ResponseEntity<?> updateUser(@PathVariable() Long id,@RequestBody User user) {

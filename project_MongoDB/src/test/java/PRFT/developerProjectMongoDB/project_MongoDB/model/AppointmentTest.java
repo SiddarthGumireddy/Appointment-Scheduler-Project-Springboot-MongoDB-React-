@@ -127,4 +127,17 @@ class AppointmentTest {
         assertNull(appt.getMetaData());
     }
 
+    @Test
+    void getAppointmentDate() {
+        Appointment appt = new Appointment();
+        appt.setAppointmentDate("10th February 2022");
+        assertEquals("10th February 2022", appt.getAppointmentDate());
+    }
+    @Test
+    void setAppointmentDate() {
+        Appointment appt = new Appointment();
+        appt.setAppointmentDate("10th February 2022");
+        assertEquals("10th February 2022", appt.getAppointmentDate());
+    }
+
 }

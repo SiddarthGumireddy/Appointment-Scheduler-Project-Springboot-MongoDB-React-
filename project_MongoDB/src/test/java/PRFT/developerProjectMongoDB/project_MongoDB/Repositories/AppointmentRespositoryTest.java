@@ -1,4 +1,21 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.controller;
+package PRFT.developerProjectMongoDB.project_MongoDB.Repositories;
+
+import PRFT.developerProjectMongoDB.project_MongoDB.controller.AppointmentController;
+import PRFT.developerProjectMongoDB.project_MongoDB.controller.userController;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
@@ -25,7 +42,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
-class AppointmentControllerTest {
+class AppointmentRespositoryTest {
     private static String URL = "/api/v1/appointment";
     private static long ApptID = 10L;
 
@@ -43,11 +60,11 @@ class AppointmentControllerTest {
     @InjectMocks
     userController controller;
 
-
+    Long IDNEW2 = Long.valueOf(821159);
 
     Appointment getValidAppt() {
         return Appointment.builder()
-                .appointmentID(10L)
+                .appointmentID(IDNEW2)
                 .userEmail("Sid@gmail.com")
                 .appointmentName("Dental")
                 .appointmentType("1 HOUR")
@@ -85,55 +102,51 @@ class AppointmentControllerTest {
         usersList.add(getValidUser());
         return usersList;
     }
+    @Test
+    void isEmpty() {
+        this.appointmentController.createAppointment(getValidAppt());
+        assertThat(this.appointmentRespository.isEmpty()).isEqualTo(false);
+    }
+
+    @Test
+    void generateLong(){
+        Long gen = this.appointmentRespository.generateLong();
+        Boolean b1 = this.appointmentRespository.UUIDExists(gen);
+        Boolean b2 = false;
+        assertThat(b1).isEqualTo(b2);
+    }
+
+    @Test
+    void UUIDExists(){
+//        this.appointmentController.createAppointment(getValidAppt());
+        Boolean b1 = false;
+        Boolean b2 = this.appointmentRespository.UUIDExists(getValidAppt().getAppointmentID());
+        assertThat(b1).isEqualTo(b2);
+    }
+
+
+    @Test
+    void testIsEmpty() {
+        this.appointmentController.createAppointment(getValidAppt());
+        assertThat(this.appointmentRespository.isEmpty()).isEqualTo(false);
+    }
+
+    @Test
+    void testUUIDExists() {
+        Boolean b1 = false;
+        Boolean b2 = this.appointmentRespository.UUIDExists(getValidAppt().getAppointmentID());
+        assertThat(b1).isEqualTo(b2);
+    }
+
+    @Test
+    void testGenerateLong() {
+        Long gen = this.appointmentRespository.generateLong();
+        Boolean b1 = this.appointmentRespository.UUIDExists(gen);
+        Boolean b2 = false;
+        assertThat(b1).isEqualTo(b2);
+    }
 
     @BeforeEach
     void setUp() {
-
-    }
-
-    @Test
-    void createAppointment() {
-        this.controller.createUser(getValidUser());
-        Appointment newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
-    }
-
-    @Test
-    void getAllAppointments_Success() throws Exception {
-
-        List<Appointment> appointmentsList = new ArrayList<>();
-        given(appointmentRespository.findAll()).willReturn(appointmentsList);
-        ResponseEntity returnedAppointments = appointmentController.getAllAppointments();
-        then(appointmentRespository).should().findAll();
-        assertThat(returnedAppointments).isNotNull();
-
-    }
-
-    @Test
-    void getAppointment() {
-        this.controller.createUser(getValidUser());
-        Appointment newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
-    }
-
-    @Test
-    void deleteAppointment() {
-        this.controller.createUser(getValidUser());
-        Appointment newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
-        Long newID = newAppt.getAppointmentID();
-        appointmentController.deleteAppointment(10L);
-        assertThat(appointmentRespository.isEmpty());
-    }
-
-    @Test
-    void updateAppointment() {
-        this.controller.createUser(getValidUser());
-        this.appointmentController.createAppointment((getValidAppt()));
-        Long newID = getValidAppt().getAppointmentID();
-        assertThat(appointmentController.updateAppointment(newID, getValidAppt())).isNotNull();
     }
 }

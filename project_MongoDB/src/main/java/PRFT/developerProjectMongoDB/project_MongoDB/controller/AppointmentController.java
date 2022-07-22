@@ -31,12 +31,16 @@ public class AppointmentController {
         if(appointment.getAppointmentID()==null){
             appointment.setAppointmentID(this.appointmentRespository.generateLong());
         }
-        Appointment save = this.appointmentRespository.save(appointment);
+        if(repository.userExists(appointment.getUserEmail())) {
+            Appointment save = this.appointmentRespository.save(appointment);
 
-        if(save == null) {
+            if (save == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return ResponseEntity.ok(save);
+        }else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(save);
     }
 //jsr303
     @GetMapping("/List/") //List All Appointments

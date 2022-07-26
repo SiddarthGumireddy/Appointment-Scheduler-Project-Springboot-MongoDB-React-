@@ -105,5 +105,9 @@ class UserControllerTest {
 
     @Test
     void updateUser() {
+        this.userController.createUser(getValidUser());
+        this.userController.createUser((getValidUser()));
+        Long newID = getValidUser().getUserID();
+        assertThat(userController.updateUser(newID, getValidUser())).isNotNull();
     }
 }

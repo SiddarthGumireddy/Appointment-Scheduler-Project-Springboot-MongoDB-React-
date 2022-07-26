@@ -1,5 +1,6 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.controller;
 
+import PRFT.developerProjectMongoDB.project_MongoDB.Client;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
@@ -16,8 +17,8 @@ import java.util.*;
 
 @RequestMapping("/api/v1/appointment")
 @RestController
-@CrossOrigin(origins = "http://localhost:3001")
-public class AppointmentController {
+@CrossOrigin(origins = "http://localhost:3000")
+public class AppointmentController extends Client{
 
     @Autowired
     private AppointmentRespository appointmentRespository;
@@ -25,23 +26,27 @@ public class AppointmentController {
     @Autowired
     private UserRepository repository;
 
+    public static List<String> existingUsers2  = new ArrayList<String>();
 
     @PostMapping("/Add/") //Add an Appointment to the DB
     public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
         if(this.repository.userExists(appointment.getUserEmail())) {
-        if(appointment.getAppointmentID()==null){
-            appointment.setAppointmentID(this.appointmentRespository.generateLong());
-        }
+            if(appointment.getAppointmentID()==null){
+                appointment.setAppointmentID(this.appointmentRespository.generateLong());
+            }
 
             Appointment save = this.appointmentRespository.save(appointment);
 
-            if (save == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+//            if (save == null) {
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
             return ResponseEntity.ok(save);
-        }else{
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+//        else{
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+
+        return new ResponseEntity<>("user does not exist. Please enter a valid user Email",HttpStatus.BAD_REQUEST);
     }
 //jsr303
     @GetMapping("/List/") //List All Appointments
@@ -62,6 +67,15 @@ public class AppointmentController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(newAppt);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getAppointmentByEId/{id}")
+    public ResponseEntity<?> getAppointmentsByEId(@PathVariable String id){
+        if (this.appointmentRespository.userExists(id)) {
+            List<Appointment> appointmentL = this.appointmentRespository.findByEmail(id);
+            return ResponseEntity.ok(appointmentL);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

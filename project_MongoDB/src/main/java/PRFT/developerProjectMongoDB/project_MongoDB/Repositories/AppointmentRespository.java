@@ -6,11 +6,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 public interface AppointmentRespository extends MongoRepository<Appointment, Long>{
 
 
@@ -20,6 +21,50 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
             return true;
         }
         return false;
+    }
+
+    default List<Appointment> findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
+        List<Appointment> AllAppointments= this.findAll();
+        List<Appointment> returnedAppointments= new ArrayList<>();
+        for (int i = 0; i < AllAppointments.size(); i++){
+            Appointment newOne = AllAppointments.get(i);
+            if (newOne.getUserEmail().equals(emailID)){
+                returnedAppointments.add(newOne);
+
+            }
+        }
+        return returnedAppointments;
+    }
+    default Boolean userExists(String emailID){
+        List<Appointment> AllAppointments = this.findAll();
+        Boolean yesorno = false;
+        for (int i = 0; i < AllAppointments.size(); i++) {
+            Appointment newOne = AllAppointments.get(i);
+            if (newOne.getUserEmail() == (emailID)) {
+                yesorno = true;
+            }
+        }
+        return yesorno;
+
+
+    }
+
+    default void deleteUserAppointments(String emailID){
+        List<Long> usersAppointments = new ArrayList<>();
+        List<Appointment> AllAppointments = this.findAll();
+        for (int i = 0; i < AllAppointments.size(); i++){
+            Appointment newOne = AllAppointments.get(i);
+            if (newOne.getUserEmail().equals(emailID)){
+                usersAppointments.add(newOne.getAppointmentID());
+            }
+        }
+        deleteAppointments(usersAppointments);
+    }
+
+    default void deleteAppointments(List<Long> usersAppointments){
+        for (int i = 0; i < usersAppointments.size();i ++){
+            this.deleteById(usersAppointments.get(i));
+        }
     }
 
     default Boolean UUIDExists(Long id){

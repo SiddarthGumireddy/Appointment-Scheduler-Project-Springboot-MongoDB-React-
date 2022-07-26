@@ -10,13 +10,10 @@ export default class Home extends Component{
                     <Card.Title style={{textAlign:'center'}}>Welcome to Perficient Scheduler</Card.Title>
                     <br/>
                     <Card.Text style={{textAlign:'center'}}>
-                        <line>Click on 'Manage Appointments' to view all Appointments</line>
+                        <line>Where scheduling becomes easy.</line>
 
                     </Card.Text>
 
-                    <Card.Text style={{textAlign:'center'}}>
-                        <line>Click on 'Manage Users' to view all Users</line>
-                    </Card.Text >
                 </Card.Body>
 
             </Card>

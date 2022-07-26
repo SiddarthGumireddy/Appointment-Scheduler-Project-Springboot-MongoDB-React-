@@ -74,12 +74,12 @@ export default class Appointment extends Component{
                         <Form.Group className="mb-3" controlId="formBasicTime">
                             <Form.Label>From</Form.Label>
                             <Form.Control required type="text" name = "AStart" value={this.state.AStart}
-                                          onChange={this.AppointmentChange} placeholder="Appointment Name" />
+                                          onChange={this.AppointmentChange} placeholder="Start Time" />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicTime" >
                             <Form.Label>Till</Form.Label>
                             <Form.Control required type="text" name = "AEnd" value={this.state.AEnd}
-                                          onChange={this.AppointmentChange} placeholder="Appointment Name" />
+                                          onChange={this.AppointmentChange} placeholder="End Time" />
                         </Form.Group>
 
                         <Button variant="primary" type="submit" >

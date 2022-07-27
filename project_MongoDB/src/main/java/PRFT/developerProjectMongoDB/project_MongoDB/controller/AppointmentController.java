@@ -98,4 +98,58 @@ public class AppointmentController extends Client{
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/Update/{id}/{key}/{value}")
+    public ResponseEntity<?> updateAppointment2(@PathVariable() Long id, @PathVariable() String key,
+                                                @PathVariable() String value) {
+        if (this.appointmentRespository.UUIDExists(id)) {
+            Appointment toUpdate = this.appointmentRespository.findByApptID(id);
+            if(key.equals("userEmail")){
+                if (this.repository.userExists(value)){
+                    toUpdate.setUserEmail(value);
+                    Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                    return ResponseEntity.ok(toUpdate2);
+                }
+                else{
+                    return new ResponseEntity<>("User Email does not exist", HttpStatus.BAD_REQUEST);
+                }
+            }
+            else if(key.equals("appointmentName")){
+                toUpdate.setAppointmentName(value);
+
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else if(key.equals("appointmentType")){
+                toUpdate.setAppointmentType(value);
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else if(key.equals("appointmentDescription")){
+                toUpdate.setAppointmentDescription(value);
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else if(key.equals("appointmentDate")){
+                toUpdate.setAppointmentDate(value);
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else if(key.equals("startTime")){
+                toUpdate.setStartTime(value);
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else if(key.equals("endTime")){
+                toUpdate.setEndTime(value);
+                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                return ResponseEntity.ok(toUpdate2);
+            }
+            else{
+                return new ResponseEntity<>("enter valid attribute whose " +
+                        "value you want to update", HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>("User Id does not exist",HttpStatus.NOT_FOUND);
+    }
 }

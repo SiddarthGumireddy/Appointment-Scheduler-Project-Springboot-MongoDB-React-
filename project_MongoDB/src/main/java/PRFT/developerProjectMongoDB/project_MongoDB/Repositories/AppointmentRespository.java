@@ -90,17 +90,17 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         return newLong;
     }
 
-//    default Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmenID
-//        List<Appointment> AllAppointments= this.findAll();
-//        for (int i = 0; i < AllAppointments.size(); i++){
-//            Appointment newOne = AllAppointments.get(i);
-//            if (newOne.getAppointmentID().equals(id)){
-//                return newOne;
-//
-//            }
-//        }
-//        return AllAppointments.get(0); //change this to none
-//    }
+    default Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmenID
+        List<Appointment> AllAppointments= this.findAll();
+        for (int i = 0; i < AllAppointments.size(); i++){
+            Appointment newOne = AllAppointments.get(i);
+            if (newOne.getAppointmentID().equals(id)){
+                return newOne;
+
+            }
+        }
+        return null;
+    }
 
 //    default Appointment findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
 //        List<Appointment> AllAppointments= this.findAll();

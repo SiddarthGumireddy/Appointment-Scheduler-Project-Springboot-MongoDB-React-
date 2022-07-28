@@ -70,9 +70,11 @@ public class userController{
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id){
         if (this.repository.UUIDExists(id)) {
-
-            String emailID = (repository.getEmailfromID(id));
-            appointmentRespository.deleteUserAppointments(emailID);
+//
+//            String emailID = (repository.getEmailfromID(id));
+//            if(this.appointmentRespository.userExists(emailID)) {
+//                this.appointmentRespository.deleteUserAppointments(emailID);
+//            }
             repository.deleteById(id);
             return "User with UserID:" + id + ", and their appointments have been deleted!";
         }

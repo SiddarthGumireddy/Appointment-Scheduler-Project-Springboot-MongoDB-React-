@@ -1,28 +1,21 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.controller;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
-import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.verification.Times;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
     private static String URL = "/api/v1/user";
@@ -103,11 +96,4 @@ class UserControllerTest {
         assertThat(userRespository.isEmpty());
     }
 
-    @Test
-    void updateUser() {
-        this.userController.createUser(getValidUser());
-        this.userController.createUser((getValidUser()));
-        Long newID = getValidUser().getUserID();
-        assertThat(userController.updateUser(newID, getValidUser())).isNotNull();
-    }
 }

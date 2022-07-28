@@ -4,10 +4,7 @@ import PRFT.developerProjectMongoDB.project_MongoDB.Client;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -82,9 +79,7 @@ public class AppointmentController extends Client{
     public ResponseEntity<?> getAppointment(@PathVariable Long id) {
         if (this.appointmentRespository.UUIDExists(id)) {
             Optional<Appointment> newAppt = appointmentRespository.findById(id);
-//            if (newAppt == null) {
-//                return new ResponseEntity<>("Given ID does not correspond to an existing appointment",HttpStatus.BAD_REQUEST);
-//            }
+
             return ResponseEntity.ok(newAppt);
         }
         return new ResponseEntity<>("Given ID does not correspond to an existing appointment",HttpStatus.BAD_REQUEST);

@@ -19,59 +19,79 @@ public class AppointmentController extends Client{
 
     @Autowired
     private AppointmentRespository appointmentRespository;
-
     @Autowired
     private UserRepository repository;
 
     public static List<String> existingUsers2  = new ArrayList<String>();
 
-    @PostMapping("/Add/") //Add an Appointment to the DB
+    @PostMapping("/Add/") //Add an Appointment to the Database
     public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
-        if(this.repository.userExists(appointment.getUserEmail())) {
-            if(appointment.getAppointmentID()==null){
+        if(this.repository.userExists(appointment.getUserEmail())) {//Make sure given user Email exists in the user DB
+            if(appointment.getAppointmentID()==null){ //Generate an ID
                 appointment.setAppointmentID(this.appointmentRespository.generateLong());
             }
+            if(appointment.getIsDeleted()==null){ //Set soft delete to false
+                appointment.setIsDeleted(false);
+            }
+            if(appointment.getAppointmentName()==null){ //If name is null, return error
+                return new ResponseEntity<>("Please enter an Appointment name that is not null", HttpStatus.BAD_REQUEST);
+            }
+            else if(appointment.getAppointmentType()==null){//If type is null, return error
+                return new ResponseEntity<>("Please enter an Appointment Type that is not null", HttpStatus.BAD_REQUEST);
 
-            Appointment save = this.appointmentRespository.save(appointment);
+            }
+            else if(appointment.getAppointmentDescription()==null){//If description is null, return error
+                return new ResponseEntity<>("Please enter an Appointment Description that is not null", HttpStatus.BAD_REQUEST);
 
-//            if (save == null) {
-//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//            }
-            return ResponseEntity.ok(save);
+            }
+            else if(appointment.getAppointmentDate()==null){//If date is null, return error
+                return new ResponseEntity<>("Please enter Date that is not null", HttpStatus.BAD_REQUEST);
+
+            }
+            else if(appointment.getStartTime()==null){//If start time is null, return error
+                return new ResponseEntity<>("Please enter a Start Time that is not null", HttpStatus.BAD_REQUEST);
+
+            }
+            else if(appointment.getEndTime()==null){//If end time is null, return error
+                return new ResponseEntity<>("Please enter an End Time that is not null", HttpStatus.BAD_REQUEST);
+            }
+
+            Appointment save = this.appointmentRespository.save(appointment); // Save appointment to repo
+
+            if (save == null) { // If save was not successful
+                return new ResponseEntity<>("Appointment was not able to be saved", HttpStatus.BAD_REQUEST);
+            }
+            return ResponseEntity.ok(save);//Return the appointment as Response Entity when saved successfully
         }
-//        else{
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
 
         return new ResponseEntity<>("user does not exist. Please enter a valid user Email",HttpStatus.BAD_REQUEST);
     }
-//jsr303
+
     @GetMapping("/List/") //List All Appointments
     public ResponseEntity<?> getAllAppointments() {
         if(this.appointmentRespository.isEmpty()){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity("No Appointments Available. Please add",HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(this.appointmentRespository.findAll());
     }
-
-
 
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
     public ResponseEntity<?> getAppointment(@PathVariable Long id) {
         if (this.appointmentRespository.UUIDExists(id)) {
             Optional<Appointment> newAppt = appointmentRespository.findById(id);
+
             return ResponseEntity.ok(newAppt);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Given ID does not correspond to an existing appointment",HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/getAppointmentByEId/{id}")
+    @GetMapping("/getAppointmentByEId/{id}")//Get one Appointment by user Email-ID
     public ResponseEntity<?> getAppointmentsByEId(@PathVariable String id){
         if (this.appointmentRespository.userExists(id)) {
             List<Appointment> appointmentL = this.appointmentRespository.findByEmail(id);
             return ResponseEntity.ok(appointmentL);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Given EMAIL-ID does not correspond to an existing appointment", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/DeleteOne/{id}") //Delete one Appointment by ID
@@ -81,6 +101,17 @@ public class AppointmentController extends Client{
             return "Appointment with appointment ID:" + id.toString() + " has been deleted successfully.";
         }
         return "Invalid Appointment ID - doesn't exist";
+    }
+
+    @DeleteMapping("/DeleteSoft/{id}") //Delete one Appointment by ID
+    public String softDeleteAppointment(@PathVariable Long id) {
+        Appointment appt = appointmentRespository.findByApptID(id);
+        if (appt == null) {
+            return "Appointment is null";
+        }
+        appt.setIsDeleted(true);
+        appointmentRespository.save(appt);
+        return "Appointment with ID:"+id.toString()+"has been soft deleted.";
     }
 
     @PutMapping("/UpdateAppointment/{id}")

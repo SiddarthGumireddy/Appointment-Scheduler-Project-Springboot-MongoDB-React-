@@ -31,6 +31,8 @@ public class Appointment {
     private String startTime;
     private String endTime;
     private Object metaData;
+    private Boolean isDeleted;
+
 
 
 

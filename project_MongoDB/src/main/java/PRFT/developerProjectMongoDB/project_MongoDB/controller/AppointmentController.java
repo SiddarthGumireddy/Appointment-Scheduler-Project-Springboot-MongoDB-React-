@@ -3,7 +3,9 @@ package PRFT.developerProjectMongoDB.project_MongoDB.controller;
 import PRFT.developerProjectMongoDB.project_MongoDB.Client;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
+import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentServiceImpl;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import java.util.*;
 
 @RequestMapping("/api/v1/appointment")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class AppointmentController extends Client{
 
     @Autowired
@@ -22,13 +24,18 @@ public class AppointmentController extends Client{
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private AppointmentService appointmentService;
+    @Autowired
+    private AppointmentServiceImpl appointmentServiceImpl;
+
     public static List<String> existingUsers2  = new ArrayList<String>();
 
     @PostMapping("/Add/") //Add an Appointment to the Database
     public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
         if(this.repository.userExists(appointment.getUserEmail())) {//Make sure given user Email exists in the user DB
             if(appointment.getAppointmentID()==null){ //Generate an ID
-                appointment.setAppointmentID(this.appointmentRespository.generateLong());
+                appointment.setAppointmentID(this.appointmentService.generateLong());
             }
             if(appointment.getIsDeleted()==null){ //Set soft delete to false
                 appointment.setIsDeleted(false);
@@ -69,7 +76,7 @@ public class AppointmentController extends Client{
 
     @GetMapping("/List/") //List All Appointments
     public ResponseEntity<?> getAllAppointments() {
-        if(this.appointmentRespository.isEmpty()){
+        if(this.appointmentService.isEmpty()){
             return new ResponseEntity("No Appointments Available. Please add",HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(this.appointmentRespository.findAll());
@@ -77,7 +84,7 @@ public class AppointmentController extends Client{
 
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
     public ResponseEntity<?> getAppointment(@PathVariable Long id) {
-        if (this.appointmentRespository.UUIDExists(id)) {
+        if (this.appointmentService.UUIDExists(id)) {
             Optional<Appointment> newAppt = appointmentRespository.findById(id);
 
             return ResponseEntity.ok(newAppt);
@@ -87,8 +94,8 @@ public class AppointmentController extends Client{
 
     @GetMapping("/getAppointmentByEId/{id}")//Get one Appointment by user Email-ID
     public ResponseEntity<?> getAppointmentsByEId(@PathVariable String id){
-        if (this.appointmentRespository.userExists(id)) {
-            List<Appointment> appointmentL = this.appointmentRespository.findByEmail(id);
+        if (this.appointmentService.userExists(id)) {
+            List<Appointment> appointmentL = this.appointmentService.findByEmail(id);
             return ResponseEntity.ok(appointmentL);
         }
         return new ResponseEntity<>("Given EMAIL-ID does not correspond to an existing appointment", HttpStatus.BAD_REQUEST);
@@ -96,7 +103,7 @@ public class AppointmentController extends Client{
 
     @DeleteMapping("/DeleteOne/{id}") //Delete one Appointment by ID
     public String deleteAppointment(@PathVariable Long id) {
-        if (this.appointmentRespository.UUIDExists(id)) {
+        if (this.appointmentService.UUIDExists(id)) {
             appointmentRespository.deleteById(id);
             return "Appointment with appointment ID:" + id.toString() + " has been deleted successfully.";
         }
@@ -105,7 +112,7 @@ public class AppointmentController extends Client{
 
     @DeleteMapping("/DeleteSoft/{id}") //Delete one Appointment by ID
     public String softDeleteAppointment(@PathVariable Long id) {
-        Appointment appt = appointmentRespository.findByApptID(id);
+        Appointment appt = appointmentService.findByApptID(id);
         if (appt == null) {
             return "Appointment is null";
         }
@@ -116,7 +123,7 @@ public class AppointmentController extends Client{
 
     @PutMapping("/UpdateAppointment/{id}")
     public ResponseEntity<?> updateAppointment(@PathVariable() Long id,@RequestBody Appointment appointment) {
-        if (this.appointmentRespository.UUIDExists(id)) {
+        if (this.appointmentService.UUIDExists(id)) {
             appointmentRespository.deleteById(id);
             Appointment save = this.appointmentRespository.save(appointment);
             return ResponseEntity.ok(save);
@@ -124,11 +131,9 @@ public class AppointmentController extends Client{
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/Update/{id}/{key}/{value}")
-    public ResponseEntity<?> updateAppointment2(@PathVariable() Long id, @PathVariable() String key,
-                                                @PathVariable() String value) {
-        if (this.appointmentRespository.UUIDExists(id)) {
-            Appointment toUpdate = this.appointmentRespository.findByApptID(id);
+    public ResponseEntity<?> updateHelper(Long id, String key, String value){
+        if (this.appointmentService.UUIDExists(id)) {
+            Appointment toUpdate = this.appointmentService.findByApptID(id);
             if(key.equals("userEmail")){
                 if (this.repository.userExists(value)){
                     toUpdate.setUserEmail(value);
@@ -176,5 +181,21 @@ public class AppointmentController extends Client{
             }
         }
         return new ResponseEntity<>("User Id does not exist",HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/Update/{id}/{key}/{value}")
+    public ResponseEntity<?> updateAppointment2(@PathVariable() Long id, @PathVariable() String key,
+                                                @PathVariable() String value) {
+        List<String> keys = List.of(key.split(","));
+        List<String> values = List.of(value.split(","));
+        if (keys.size() == values.size()) {
+            for (int i = 0; i < keys.size(); i++){
+                updateHelper(id,keys.get(i), values.get(i));
+            }
+                return ResponseEntity.ok("Updated");
+        }
+        else{
+            return new ResponseEntity<>("keys and values sizes don't match", HttpStatus.BAD_REQUEST);
+        }
     }
 }

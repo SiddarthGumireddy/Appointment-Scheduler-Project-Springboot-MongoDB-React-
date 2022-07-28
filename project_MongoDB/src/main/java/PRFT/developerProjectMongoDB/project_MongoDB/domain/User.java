@@ -1,4 +1,4 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.model;
+package PRFT.developerProjectMongoDB.project_MongoDB.domain;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.EmailAddress;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.PhoneNumber;

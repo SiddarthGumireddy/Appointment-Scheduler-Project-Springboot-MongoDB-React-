@@ -1,15 +1,12 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.Repositories;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:3000")
 public interface AppointmentRespository extends MongoRepository<Appointment, Long>{
@@ -60,6 +57,22 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         }
         deleteAppointments(usersAppointments);
     }
+    default List getUserAppointments(String emailID){
+        List<Appointment> usersAppointments = new ArrayList<>();
+        List<Appointment> AllAppointments = this.findAll();
+        for (Appointment newOne : AllAppointments) {
+            if (newOne.getUserEmail().equals(emailID)) {
+                usersAppointments.add(newOne);
+            }
+        }
+        return  usersAppointments;
+    }
+    default void updateUserAppointmentListViaEmail(List appointmentList,String emailID){
+        for (Object appointment : appointmentList) {
+            Appointment updatedAppointment = (Appointment) appointment;
+            updatedAppointment.setUserEmail(emailID);
+        }
+    }
 
     default void deleteAppointments(List<Long> usersAppointments){
         for (int i = 0; i < usersAppointments.size();i ++){
@@ -78,16 +91,15 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         return false;
     }
     default Long generateLong(){
-        Boolean isIDThere = true;
+        boolean isIDThere = true;
         Long newLong = new Random().nextLong(999999);
-        while (isIDThere = true){
-            if (UUIDExists(newLong) == false){
+        while (true){
+            if (!UUIDExists(newLong)){
                 isIDThere = false;
                 return newLong;
             }
             newLong = new Random().nextLong();
         }
-        return newLong;
     }
 
     default Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmenID

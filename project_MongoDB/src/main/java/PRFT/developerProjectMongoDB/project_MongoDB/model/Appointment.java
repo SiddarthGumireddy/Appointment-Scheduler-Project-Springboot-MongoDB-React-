@@ -28,10 +28,7 @@ public class Appointment {
     private String appointmentType;
     private String appointmentDescription;
     private String appointmentDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-    @JsonDeserialize(using = TimeInstantDeserializer.class)
-    @JsonSerialize(using = TimeInstantSerializer.class)
-    private Instant startTime;
+    private String startTime;
     private String endTime;
     private Object metaData;
     private Boolean isDeleted;

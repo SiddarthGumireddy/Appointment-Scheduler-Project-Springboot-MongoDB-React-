@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
+
 @CrossOrigin(origins = "http://localhost:3000")
 public interface UserRepository extends MongoRepository<User, Long> {
     default Boolean UUIDExists(Long id) {
@@ -65,6 +65,16 @@ public interface UserRepository extends MongoRepository<User, Long> {
             newLong = new Random().nextLong();
         }
         return newLong;
+    }
+    default User findByUserID(Long id){ //Returns User Entity with the given UserId
+        List<User> AllUsers= this.findAll();
+        for (int i = 0; i < AllUsers.size(); i++){
+            User newUser = AllUsers.get(i);
+            if (newUser.getUserID().equals(id)){
+                return newUser;
+            }
+        }
+        return null;
     }
 
     default String getEmailfromID(Long id){

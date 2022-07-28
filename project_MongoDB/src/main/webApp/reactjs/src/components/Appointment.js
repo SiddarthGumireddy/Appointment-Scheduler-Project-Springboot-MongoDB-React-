@@ -6,7 +6,7 @@ import axios from "axios";
 export default class Appointment extends Component{
     constructor(props) {
         super(props);
-        this.state = {appointmentID:'',userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''};
+        this.state = {appointmentID:'',userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:'',isDeleted:''};
         this.AppointmentChange = this.AppointmentChange.bind(this);
         this.submitAppointment = this.submitAppointment.bind(this);
     }
@@ -22,13 +22,14 @@ export default class Appointment extends Component{
             appointmentDescription:this.state.ADesc,
             appointmentDate:this.state.ADate,
             startTime:this.state.AStart,
-            endTime:this.state.AEnd
+            endTime:this.state.AEnd,
+            isDeleted:this.state.AisDeleted
         };
 
         axios.post("http://localhost:8082/api/v1/appointment/Add/", appointment)
             .then(response => {
                 if(response.data != null){
-                    this.setState({userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:''});
+                    this.setState({userEmail:'', appointmentName:'', appointmentType:'',appointmentDesc:'', appointmentDate:'', startTime:'', endTime:'',isDeleted:''});
                     alert("Appointment saved successfully!");
                 }
             })

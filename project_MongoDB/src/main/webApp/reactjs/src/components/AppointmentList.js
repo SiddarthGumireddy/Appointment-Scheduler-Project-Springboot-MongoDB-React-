@@ -55,13 +55,14 @@ class AppointmentList extends React.Component{
                             <th className="text-white">Date</th>
                             <th className="text-white">Start Time</th>
                             <th className="text-white">End Time</th>
+                            <th className="text-white">Deleted?</th>
                             <th className="text-white">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {this.state.appointments.length === 0 ?
                                 <tr align="center">
-                                    <td colSpan="8"> No Appointments Scheduled</td>
+                                    <td colSpan="9"> No Appointments Scheduled</td>
                                 </tr> :
                                 this.state.appointments.map((appointment)=> (
                                     <tr key ={appointment.appointmentID}>
@@ -73,6 +74,7 @@ class AppointmentList extends React.Component{
                                         <td>{appointment.appointmentDate}</td>
                                         <td>{appointment.startTime}</td>
                                         <td>{appointment.endTime}</td>
+                                        <td>{appointment.isDeleted}</td>
                                         <td>
                                             <ButtonGroup>
                                                 <Link  to={"/Edit/"+appointment.appointmentID} className="btn btn -sm btn-outline-success">Update</Link>

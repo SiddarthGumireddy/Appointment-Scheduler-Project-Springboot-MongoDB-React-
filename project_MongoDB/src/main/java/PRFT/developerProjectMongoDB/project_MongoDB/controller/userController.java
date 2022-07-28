@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -85,7 +86,8 @@ public class userController{
                 if (this.repository.userExists(value)){
                     currentUser.setEmailID(value);
                     User updatedUser = this.repository.save(currentUser);
-
+                    List UserAppointmentList=this.appointmentRespository.getUserAppointments(value);
+                    appointmentRespository.updateUserAppointmentListViaEmail(UserAppointmentList,value);
                     return ResponseEntity.ok(updatedUser);
                 }
                 else{

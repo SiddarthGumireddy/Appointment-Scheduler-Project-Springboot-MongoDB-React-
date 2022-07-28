@@ -57,6 +57,22 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         }
         deleteAppointments(usersAppointments);
     }
+    default List getUserAppointments(String emailID){
+        List<Appointment> usersAppointments = new ArrayList<>();
+        List<Appointment> AllAppointments = this.findAll();
+        for (Appointment newOne : AllAppointments) {
+            if (newOne.getUserEmail().equals(emailID)) {
+                usersAppointments.add(newOne);
+            }
+        }
+        return  usersAppointments;
+    }
+    default void updateUserAppointmentListViaEmail(List appointmentList,String emailID){
+        for (Object appointment : appointmentList) {
+            Appointment updatedAppointment = (Appointment) appointment;
+            updatedAppointment.setUserEmail(emailID);
+        }
+    }
 
     default void deleteAppointments(List<Long> usersAppointments){
         for (int i = 0; i < usersAppointments.size();i ++){

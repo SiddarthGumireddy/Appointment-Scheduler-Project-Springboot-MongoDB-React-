@@ -6,6 +6,7 @@ import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentServiceImpl;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class AppointmentController extends Client{
     public static List<String> existingUsers2  = new ArrayList<String>();
 
     @PostMapping("/Add/") //Add an Appointment to the Database
-    public ResponseEntity<?> createAppointment(@Validated @RequestBody Appointment appointment) {
+    public ResponseEntity<?> createAppointment(@Validated @RequestBody AppointmentDTO appointment) {
         if(this.repository.userExists(appointment.getUserEmail())) {//Make sure given user Email exists in the user DB
             if(appointment.getAppointmentID()==null){ //Generate an ID
                 appointment.setAppointmentID(this.appointmentService.generateLong());
@@ -63,7 +64,7 @@ public class AppointmentController extends Client{
                 return new ResponseEntity<>("Please enter an End Time that is not null", HttpStatus.BAD_REQUEST);
             }
 
-            Appointment save = this.appointmentRespository.save(appointment); // Save appointment to repo
+            AppointmentDTO save = this.appointmentRespository.save(appointment); // Save appointment to repo
 
             if (save == null) { // If save was not successful
                 return new ResponseEntity<>("Appointment was not able to be saved", HttpStatus.BAD_REQUEST);
@@ -85,7 +86,7 @@ public class AppointmentController extends Client{
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
     public ResponseEntity<?> getAppointment(@PathVariable Long id) {
         if (this.appointmentService.UUIDExists(id)) {
-            Optional<Appointment> newAppt = appointmentRespository.findById(id);
+            Optional<AppointmentDTO> newAppt = appointmentRespository.findById(id);
 
             return ResponseEntity.ok(newAppt);
         }
@@ -95,7 +96,7 @@ public class AppointmentController extends Client{
     @GetMapping("/getAppointmentByEId/{id}")//Get one Appointment by user Email-ID
     public ResponseEntity<?> getAppointmentsByEId(@PathVariable String id){
         if (this.appointmentService.userExists(id)) {
-            List<Appointment> appointmentL = this.appointmentService.findByEmail(id);
+            List<AppointmentDTO> appointmentL = this.appointmentService.findByEmail(id);
             return ResponseEntity.ok(appointmentL);
         }
         return new ResponseEntity<>("Given EMAIL-ID does not correspond to an existing appointment", HttpStatus.BAD_REQUEST);
@@ -112,7 +113,7 @@ public class AppointmentController extends Client{
 
     @DeleteMapping("/DeleteSoft/{id}") //Delete one Appointment by ID
     public String softDeleteAppointment(@PathVariable Long id) {
-        Appointment appt = appointmentService.findByApptID(id);
+        AppointmentDTO appt = appointmentService.findByApptID(id);
         if (appt == null) {
             return "Appointment is null";
         }
@@ -122,10 +123,10 @@ public class AppointmentController extends Client{
     }
 
     @PutMapping("/UpdateAppointment/{id}")
-    public ResponseEntity<?> updateAppointment(@PathVariable() Long id,@RequestBody Appointment appointment) {
+    public ResponseEntity<?> updateAppointment(@PathVariable() Long id,@RequestBody AppointmentDTO appointment) {
         if (this.appointmentService.UUIDExists(id)) {
             appointmentRespository.deleteById(id);
-            Appointment save = this.appointmentRespository.save(appointment);
+            AppointmentDTO save = this.appointmentRespository.save(appointment);
             return ResponseEntity.ok(save);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -133,11 +134,11 @@ public class AppointmentController extends Client{
 
     public ResponseEntity<?> updateHelper(Long id, String key, String value){
         if (this.appointmentService.UUIDExists(id)) {
-            Appointment toUpdate = this.appointmentService.findByApptID(id);
+            AppointmentDTO toUpdate = this.appointmentService.findByApptID(id);
             if(key.equals("userEmail")){
                 if (this.repository.userExists(value)){
                     toUpdate.setUserEmail(value);
-                    Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                    AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                     return ResponseEntity.ok(toUpdate2);
                 }
                 else{
@@ -147,32 +148,32 @@ public class AppointmentController extends Client{
             else if(key.equals("appointmentName")){
                 toUpdate.setAppointmentName(value);
 
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("appointmentType")){
                 toUpdate.setAppointmentType(value);
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("appointmentDescription")){
                 toUpdate.setAppointmentDescription(value);
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("appointmentDate")){
                 toUpdate.setAppointmentDate(value);
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("startTime")){
                 toUpdate.setStartTime(value);
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("endTime")){
                 toUpdate.setEndTime(value);
-                Appointment toUpdate2 = this.appointmentRespository.save(toUpdate);
+                AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else{

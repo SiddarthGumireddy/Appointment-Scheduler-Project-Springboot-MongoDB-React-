@@ -1,6 +1,7 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface AppointmentService {
 
     Boolean isEmpty();
 
-    List<Appointment> findByEmail(String emailID);
+    List<AppointmentDTO> findByEmail(String emailID);
 
     Boolean userExists(String emailID);
 
@@ -18,7 +19,7 @@ public interface AppointmentService {
 
     List getUserAppointments(String emailID);
 
-    void updateUserAppointmentListViaEmail(List<Appointment> appointmentList,String emailID);
+    void updateUserAppointmentListViaEmail(List<AppointmentDTO> appointmentList,String emailID);
 
     void deleteAppointments(List<Long> usersAppointments);
 
@@ -26,6 +27,6 @@ public interface AppointmentService {
 
     Long generateLong();
 
-    Appointment findByApptID(Long id);
+    AppointmentDTO findByApptID(Long id);
 
 }

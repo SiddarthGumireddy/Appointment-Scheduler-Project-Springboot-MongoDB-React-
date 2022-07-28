@@ -2,6 +2,7 @@ package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,18 +17,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentRespository appointmentRespository;
 
     public Boolean isEmpty(){
-        List<Appointment> AllAppointments= appointmentRespository.findAll();
+        List<AppointmentDTO> AllAppointments= appointmentRespository.findAll();
         if (AllAppointments.isEmpty()){
             return true;
         }
         return false;
     }
 
-    public List<Appointment> findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
-        List<Appointment> AllAppointments= appointmentRespository.findAll();
-        List<Appointment> returnedAppointments= new ArrayList<>();
+    public List<AppointmentDTO> findByEmail(String emailID){ //Returns Appointment Entity with the given AppointmenID
+        List<AppointmentDTO> AllAppointments= appointmentRespository.findAll();
+        List<AppointmentDTO> returnedAppointments= new ArrayList<>();
         for (int i = 0; i < AllAppointments.size(); i++){
-            Appointment newOne = AllAppointments.get(i);
+            AppointmentDTO newOne = AllAppointments.get(i);
             if (newOne.getUserEmail().equals(emailID)){
                 returnedAppointments.add(newOne);
 
@@ -36,10 +37,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         return returnedAppointments;
     }
     public Boolean userExists(String emailID){
-        List<Appointment> AllAppointments = appointmentRespository.findAll();
+        List<AppointmentDTO> AllAppointments = appointmentRespository.findAll();
         Boolean yesorno = false;
         for (int i = 0; i < AllAppointments.size(); i++) {
-            Appointment newOne = AllAppointments.get(i);
+            AppointmentDTO newOne = AllAppointments.get(i);
             if (newOne.getUserEmail() == (emailID)) {
                 yesorno = true;
             }
@@ -51,9 +52,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     public void deleteUserAppointments(String emailID){
         List<Long> usersAppointments = new ArrayList<>();
-        List<Appointment> AllAppointments = appointmentRespository.findAll();
+        List<AppointmentDTO> AllAppointments = appointmentRespository.findAll();
         for (int i = 0; i < AllAppointments.size(); i++){
-            Appointment newOne = AllAppointments.get(i);
+            AppointmentDTO newOne = AllAppointments.get(i);
             if (newOne.getUserEmail().equals(emailID)){
                 usersAppointments.add(newOne.getAppointmentID());
             }
@@ -69,9 +70,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     public Boolean UUIDExists(Long id){
-        List<Appointment> AllAppointments= appointmentRespository.findAll();
+        List<AppointmentDTO> AllAppointments= appointmentRespository.findAll();
         for (int i = 0; i < AllAppointments.size(); i++){
-            Appointment newOne = AllAppointments.get(i);
+            AppointmentDTO newOne = AllAppointments.get(i);
             if (newOne.getAppointmentID().equals(id)){
                 return true;
             }
@@ -90,30 +91,29 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
-    public Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmentID
-        List<Appointment> AllAppointments= appointmentRespository.findAll();
+    public AppointmentDTO findByApptID(Long id){ //Returns Appointment Entity with the given AppointmentID
+        List<AppointmentDTO> AllAppointments= appointmentRespository.findAll();
         for (int i = 0; i < AllAppointments.size(); i++){
-            Appointment newOne = AllAppointments.get(i);
+            AppointmentDTO newOne = AllAppointments.get(i);
             if (newOne.getAppointmentID().equals(id)){
                 return newOne;
-
             }
         }
         return null;
     }
 
     public List getUserAppointments(String emailID){
-        List<Appointment> usersAppointments = new ArrayList<>();
-        List<Appointment> AllAppointments = appointmentRespository.findAll();
-        for (Appointment newOne : AllAppointments) {
+        List<AppointmentDTO> usersAppointments = new ArrayList<>();
+        List<AppointmentDTO> AllAppointments = appointmentRespository.findAll();
+        for (AppointmentDTO newOne : AllAppointments) {
             if (newOne.getUserEmail().equals(emailID)) {
                 usersAppointments.add(newOne);
             }
         }
         return  usersAppointments;
     }
-    public void updateUserAppointmentListViaEmail(List<Appointment> appointmentList,String emailID){
-        for (Appointment appointment : appointmentList) {
+    public void updateUserAppointmentListViaEmail(List<AppointmentDTO> appointmentList,String emailID){
+        for (AppointmentDTO appointment : appointmentList) {
             appointment.setUserEmail(emailID);
         }
     }

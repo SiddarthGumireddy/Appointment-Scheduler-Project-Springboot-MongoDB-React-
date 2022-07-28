@@ -27,7 +27,6 @@ public class Appointment {
     private String appointmentName;
     private String appointmentType;
     private String appointmentDescription;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private String appointmentDate;
     private String startTime;
     private String endTime;

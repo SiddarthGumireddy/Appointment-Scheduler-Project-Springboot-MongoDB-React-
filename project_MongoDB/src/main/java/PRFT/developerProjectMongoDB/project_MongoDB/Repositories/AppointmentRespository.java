@@ -1,15 +1,12 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.Repositories;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:3000")
 public interface AppointmentRespository extends MongoRepository<Appointment, Long>{
@@ -78,16 +75,15 @@ public interface AppointmentRespository extends MongoRepository<Appointment, Lon
         return false;
     }
     default Long generateLong(){
-        Boolean isIDThere = true;
+        boolean isIDThere = true;
         Long newLong = new Random().nextLong(999999);
-        while (isIDThere = true){
-            if (UUIDExists(newLong) == false){
+        while (true){
+            if (!UUIDExists(newLong)){
                 isIDThere = false;
                 return newLong;
             }
             newLong = new Random().nextLong();
         }
-        return newLong;
     }
 
     default Appointment findByApptID(Long id){ //Returns Appointment Entity with the given AppointmenID

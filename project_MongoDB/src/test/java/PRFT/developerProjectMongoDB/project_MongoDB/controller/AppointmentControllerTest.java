@@ -9,21 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.verification.Times;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class AppointmentControllerTest {
     private static String URL = "/api/v1/appointment";
@@ -64,11 +58,11 @@ class AppointmentControllerTest {
     User getValidUser() {
         return User.builder()
                 .userID(10L)
-                .firstName("Sid@gmail.com")
+                .firstName("")
                 .lastName("Dental")
                 .gender("1 HOUR")
                 .age("Desc1")
-                .emailID("24th Feb 2022")
+                .emailID("Sid@gmail.com")
                 .phoneNumber("9AM")
                 .build();
     }

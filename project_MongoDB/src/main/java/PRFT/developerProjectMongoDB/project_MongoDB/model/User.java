@@ -1,27 +1,26 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.model;
+
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.EmailAddress;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.UUID;
+import java.io.Serializable;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
+@AllArgsConstructor
+@Builder
 public class User {
-    @Id
     private Long userID;
     private String firstName;
     private String lastName;
+
     private String gender;
+
     private String age;
+
     private String emailID;
     private String phoneNumber;
 }

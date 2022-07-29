@@ -2,8 +2,10 @@ package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -102,7 +104,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
-    public List getUserAppointments(String emailID){
+    public List<AppointmentDTO> getUserAppointments(String emailID){
         List<AppointmentDTO> usersAppointments = new ArrayList<>();
         List<AppointmentDTO> AllAppointments = appointmentRespository.findAll();
         for (AppointmentDTO newOne : AllAppointments) {
@@ -115,6 +117,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void updateUserAppointmentListViaEmail(List<AppointmentDTO> appointmentList,String emailID){
         for (AppointmentDTO appointment : appointmentList) {
             appointment.setUserEmail(emailID);
+            AppointmentDTO toUpdate2 = this.appointmentRespository.save(appointment);
+            ResponseEntity.ok(toUpdate2);
+
         }
     }
 

@@ -17,7 +17,7 @@ public interface AppointmentService {
 
     void deleteUserAppointments(String emailID);
 
-    List getUserAppointments(String emailID);
+    List<AppointmentDTO> getUserAppointments(String emailID);
 
     void updateUserAppointmentListViaEmail(List<AppointmentDTO> appointmentList,String emailID);
 

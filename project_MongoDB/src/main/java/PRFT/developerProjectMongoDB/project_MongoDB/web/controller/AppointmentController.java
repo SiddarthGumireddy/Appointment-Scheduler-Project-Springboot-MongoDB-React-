@@ -86,7 +86,7 @@ public class AppointmentController{
 
     @GetMapping("/UsersAppointments/{eId}") //List All Appointments
     public ResponseEntity<?> getUserAppointments(@PathVariable String eId) {
-        if (this.appointmentService.userExists(eId)) {
+        if (this.service.userExists(eId)) {
             return ResponseEntity.ok(this.appointmentService.getUserAppointments(eId));
         }
         return new ResponseEntity<>("invalid user Email",HttpStatus.BAD_REQUEST);

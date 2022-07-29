@@ -113,17 +113,17 @@ public class userController{
     public void userUpdateHelper(Long id, String key, String value){
         if (this.service.UUIDExists(id)) {
             User toUpdate = this.service.findByUserID(id);
-            if(key.equals("userEmail")){
-                if (this.service.userExists(value)){
-                    toUpdate.setEmailID(value);
-                    User toUpdate2 = this.repository.save(toUpdate);
+
+            if(key.equals("emailID")){
+                String OGEmail = toUpdate.getEmailID();
+                toUpdate.setEmailID(value);
+                User toUpdate2 = this.repository.save(toUpdate);
+                if(this.appointmentService.isEmpty()==false) {
+                    List<AppointmentDTO> UserAppointmentList = this.appointmentService.getUserAppointments(OGEmail);
+                    appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList, value);
                     ResponseEntity.ok(toUpdate2);
-                    return;
                 }
-                else{
-                    new ResponseEntity<>("User Email does not exist", HttpStatus.BAD_REQUEST);
-                    return;
-                }
+                return;
             }
             else if(key.equals("firstName")){
                 toUpdate.setFirstName(value);
@@ -155,14 +155,7 @@ public class userController{
                 ResponseEntity.ok(toUpdate2);
                 return;
             }
-            else if(key.equals("emailID")){
-                toUpdate.setEmailID(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                List<AppointmentDTO> UserAppointmentList = this.appointmentService.getUserAppointments(value);
-                appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList,value);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
+
             else{
                 new ResponseEntity<>("enter valid key for the respective " +
                         "value you would like to update", HttpStatus.BAD_REQUEST);

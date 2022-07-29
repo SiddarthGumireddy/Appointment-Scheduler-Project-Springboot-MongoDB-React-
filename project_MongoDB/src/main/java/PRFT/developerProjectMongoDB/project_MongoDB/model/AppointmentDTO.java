@@ -9,6 +9,10 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,10 +28,14 @@ public class AppointmentDTO implements Serializable {
     private String appointmentType;
     private String appointmentDescription;
 
-    private String appointmentDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate appointmentDate;
 
-    private String startTime;
-    private String endTime;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startTime;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;
     private Object metaData;
     private Boolean isDeleted;
 

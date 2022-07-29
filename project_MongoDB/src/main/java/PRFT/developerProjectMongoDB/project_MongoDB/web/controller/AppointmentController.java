@@ -1,4 +1,4 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.controller;
+package PRFT.developerProjectMongoDB.project_MongoDB.web.controller;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Client;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RequestMapping("/api/v1/appointment")
@@ -81,6 +84,14 @@ public class AppointmentController extends Client{
             return new ResponseEntity("No Appointments Available. Please add",HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(this.appointmentRespository.findAll());
+    }
+
+    @GetMapping("/UsersAppointments/{eId}") //List All Appointments
+    public ResponseEntity<?> getUserAppointments(@PathVariable String eId) {
+        if (this.appointmentService.userExists(eId)) {
+            return ResponseEntity.ok(this.appointmentService.getUserAppointments(eId));
+        }
+        return new ResponseEntity<>("invalid user Email",HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/GetOne/{id}") //Get one Appointment by ID
@@ -162,17 +173,23 @@ public class AppointmentController extends Client{
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("appointmentDate")){
-                toUpdate.setAppointmentDate(value);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+                LocalDate dateNew = LocalDate.parse(value, formatter);
+                toUpdate.setAppointmentDate(dateNew);
                 AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("startTime")){
-                toUpdate.setStartTime(value);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                LocalDateTime dateNew = LocalDateTime.parse(value, formatter);
+                toUpdate.setStartTime(dateNew);
                 AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }
             else if(key.equals("endTime")){
-                toUpdate.setEndTime(value);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                LocalDateTime dateNew = LocalDateTime.parse(value, formatter);
+                toUpdate.setEndTime(dateNew);
                 AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                 return ResponseEntity.ok(toUpdate2);
             }

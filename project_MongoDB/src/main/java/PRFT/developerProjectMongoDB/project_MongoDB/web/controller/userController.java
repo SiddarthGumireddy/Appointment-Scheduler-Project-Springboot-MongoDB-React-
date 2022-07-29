@@ -1,4 +1,4 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.controller;
+package PRFT.developerProjectMongoDB.project_MongoDB.web.controller;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;

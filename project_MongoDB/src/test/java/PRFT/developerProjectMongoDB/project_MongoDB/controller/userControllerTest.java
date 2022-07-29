@@ -28,7 +28,7 @@ class UserControllerTest {
     Map<String, Object> model;
 
     @InjectMocks
-    userController userController;
+    PRFT.developerProjectMongoDB.project_MongoDB.web.controller.userController userController;
 
 
 

@@ -5,6 +5,7 @@ import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentResp
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentServiceImpl;
+import PRFT.developerProjectMongoDB.project_MongoDB.Services.UserService;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,17 @@ public class AppointmentController extends Client{
     private AppointmentRespository appointmentRespository;
     @Autowired
     private UserRepository repository;
-
+    @Autowired
+    private UserService service;
     @Autowired
     private AppointmentService appointmentService;
-    @Autowired
-    private AppointmentServiceImpl appointmentServiceImpl;
+
 
     public static List<String> existingUsers2  = new ArrayList<String>();
 
     @PostMapping("/Add/") //Add an Appointment to the Database
     public ResponseEntity<?> createAppointment(@Validated @RequestBody AppointmentDTO appointment) {
-        if(this.repository.userExists(appointment.getUserEmail())) {//Make sure given user Email exists in the user DB
+        if(this.service.userExists(appointment.getUserEmail())) {//Make sure given user Email exists in the user DB
             if(appointment.getAppointmentID()==null){ //Generate an ID
                 appointment.setAppointmentID(this.appointmentService.generateLong());
             }
@@ -147,7 +148,7 @@ public class AppointmentController extends Client{
         if (this.appointmentService.UUIDExists(id)) {
             AppointmentDTO toUpdate = this.appointmentService.findByApptID(id);
             if(key.equals("userEmail")){
-                if (this.repository.userExists(value)){
+                if (this.service.userExists(value)){
                     toUpdate.setUserEmail(value);
                     AppointmentDTO toUpdate2 = this.appointmentRespository.save(toUpdate);
                     return ResponseEntity.ok(toUpdate2);

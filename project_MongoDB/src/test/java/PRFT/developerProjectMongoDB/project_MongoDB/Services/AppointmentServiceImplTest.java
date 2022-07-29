@@ -1,33 +1,29 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.controller;
+package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
-import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
-import PRFT.developerProjectMongoDB.project_MongoDB.Services.UserService;
-import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import PRFT.developerProjectMongoDB.project_MongoDB.web.controller.AppointmentController;
 import PRFT.developerProjectMongoDB.project_MongoDB.web.controller.userController;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-
+import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
-class AppointmentControllerTest {
+class AppointmentServiceImplTest {
     private static String URL = "/api/v1/appointment";
     private static long ApptID = 10L;
 
@@ -50,8 +46,6 @@ class AppointmentControllerTest {
     AppointmentController appointmentController;
     @InjectMocks
     userController controller;
-
-
 
     AppointmentDTO getValidAppt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
@@ -95,51 +89,42 @@ class AppointmentControllerTest {
         return usersList;
     }
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    void isEmpty() {
+        appointmentController.createAppointment(getValidAppt());
+        assertEquals(false, appointmentService.isEmpty());
+    }
+
+
+    @Test
+    void userExists() {
     }
 
     @Test
-    void createAppointment() {
-        this.controller.createUser(getValidUser());
-        AppointmentDTO newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
+    void deleteUserAppointments() {
     }
 
     @Test
-    void getAllAppointments_Success() throws Exception {
-        List<AppointmentDTO> appointmentsList = new ArrayList<>();
-        given(appointmentRespository.findAll()).willReturn(appointmentsList);
-        ResponseEntity returnedAppointments = appointmentController.getAllAppointments();
-        then(appointmentRespository).should().findAll();
-        assertThat(returnedAppointments).isNotNull();
+    void deleteAppointments() {
     }
 
     @Test
-    void getAppointment() {
-        this.controller.createUser(getValidUser());
-        AppointmentDTO newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
+    void UUIDExists() {
     }
 
     @Test
-    void deleteAppointment() {
-        this.controller.createUser(getValidUser());
-        AppointmentDTO newAppt = getValidAppt();
-        appointmentController.createAppointment(newAppt);
-        assertThat(appointmentController.getAppointment(10L).equals(newAppt));
-        Long newID = newAppt.getAppointmentID();
-        appointmentController.deleteAppointment(10L);
-        assertThat(appointmentService.isEmpty());
+    void generateLong() {
     }
 
     @Test
-    void updateAppointment() {
-        this.controller.createUser(getValidUser());
-        this.appointmentController.createAppointment((getValidAppt()));
-        Long newID = getValidAppt().getAppointmentID();
-        assertThat(appointmentController.updateAppointment(newID, getValidAppt())).isNotNull();
+    void findByApptID() {
+    }
+
+    @Test
+    void getUserAppointments() {
+    }
+
+    @Test
+    void updateUserAppointmentListViaEmail() {
     }
 }

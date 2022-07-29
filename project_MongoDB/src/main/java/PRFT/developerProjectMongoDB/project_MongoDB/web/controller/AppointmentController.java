@@ -1,12 +1,9 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.web.controller;
 
-import PRFT.developerProjectMongoDB.project_MongoDB.Client;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
-import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentServiceImpl;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.UserService;
-import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +19,7 @@ import java.util.*;
 @RequestMapping("/api/v1/appointment")
 @RestController
 @CrossOrigin(origins = "*")
-public class AppointmentController extends Client{
+public class AppointmentController{
 
     @Autowired
     private AppointmentRespository appointmentRespository;

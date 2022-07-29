@@ -1,7 +1,11 @@
-package PRFT.developerProjectMongoDB.project_MongoDB.model;
+package PRFT.developerProjectMongoDB.project_MongoDB.domain;
 
-import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +17,6 @@ class AppointmentTest {
         appt.setAppointmentID(10L);
         assertEquals(10L, appt.getAppointmentID());
     }
-
 
     @Test
     void getUserEmail() {
@@ -44,18 +47,34 @@ class AppointmentTest {
     }
 
     @Test
+    void getAppointmentDate() {
+        Appointment appt = new Appointment();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        String nowTime = "2011-11-11";
+        LocalDate dateNew = LocalDate.parse(nowTime, formatter);
+        appt.setStartTime(String.valueOf(dateNew));
+        assertEquals(nowTime, appt.getStartTime());
+    }
+
+    @Test
     void getStartTime() {
         Appointment appt = new Appointment();
-        String nowTime = "9AM";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String nowTime = "2011-11-11 12:12:12";
+        LocalDateTime dateNew = LocalDateTime.parse(nowTime, formatter);
         appt.setStartTime(nowTime);
+        nowTime =  nowTime.replace("T"," ");
         assertEquals(nowTime, appt.getStartTime());
     }
 
     @Test
     void getEndTime() {
         Appointment appt = new Appointment();
-        String nowTime = "9AM";
-        appt.setEndTime(nowTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String nowTime = "2011-11-11 12:12:12";
+        LocalDateTime dateNew = LocalDateTime.parse(nowTime, formatter);
+        appt.setEndTime(((nowTime)));
+        nowTime =  nowTime.replace("T"," ");
         assertEquals(nowTime, appt.getEndTime());
     }
 
@@ -64,6 +83,13 @@ class AppointmentTest {
         Appointment appt = new Appointment();
         appt.setMetaData(null);
         assertNull(appt.getMetaData());
+    }
+
+    @Test
+    void getIsDeleted() {
+        Appointment appt = new Appointment();
+        appt.setIsDeleted(true);
+        assertEquals(true, appt.getIsDeleted());
     }
 
     @Test
@@ -102,18 +128,34 @@ class AppointmentTest {
     }
 
     @Test
+    void setAppointmentDate() {
+        Appointment appt = new Appointment();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        String nowTime = "2011-11-11";
+        LocalDate dateNew = LocalDate.parse(nowTime, formatter);
+        appt.setStartTime(String.valueOf(dateNew));
+        assertEquals(nowTime, appt.getStartTime());
+    }
+
+    @Test
     void setStartTime() {
         Appointment appt = new Appointment();
-        String nowTime = "9AM";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String nowTime = "2011-11-11 12:12:12";
+        LocalDateTime dateNew = LocalDateTime.parse(nowTime, formatter);
         appt.setStartTime(nowTime);
+        nowTime =  nowTime.replace("T"," ");
         assertEquals(nowTime, appt.getStartTime());
     }
 
     @Test
     void setEndTime() {
         Appointment appt = new Appointment();
-        String nowTime = "9AM";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String nowTime = "2011-11-11 12:12:12";
+        LocalDateTime dateNew = LocalDateTime.parse(nowTime, formatter);
         appt.setEndTime(nowTime);
+        nowTime =  nowTime.replace("T"," ");
         assertEquals(nowTime, appt.getEndTime());
     }
 
@@ -125,16 +167,9 @@ class AppointmentTest {
     }
 
     @Test
-    void getAppointmentDate() {
+    void setIsDeleted() {
         Appointment appt = new Appointment();
-        appt.setAppointmentDate("10th February 2022");
-        assertEquals("10th February 2022", appt.getAppointmentDate());
+        appt.setIsDeleted(true);
+        assertEquals(true, appt.getIsDeleted());
     }
-    @Test
-    void setAppointmentDate() {
-        Appointment appt = new Appointment();
-        appt.setAppointmentDate("10th February 2022");
-        assertEquals("10th February 2022", appt.getAppointmentDate());
-    }
-
 }

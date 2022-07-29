@@ -30,70 +30,70 @@ class UserControllerTest {
     @InjectMocks
     PRFT.developerProjectMongoDB.project_MongoDB.web.controller.userController userController;
 
-
-
-    User getValidUser() {
-        return User.builder()
-                .userID(ApptID)
-                .emailID("JsMith@gmail.com")
-                .firstName("Jake")
-                .lastName("Smith")
-                .age("22")
-                .gender("Male")
-                .phoneNumber("2345432453")
-                .build();
-    }
-
-    List<User> getValidUserList() {
-        List<User> usersList = new ArrayList<>();
-        usersList.add(getValidUser());
-        usersList.add(getValidUser());
-        return usersList;
-    }
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
-    @Test
-    void createUser() {
-        User newUser = getValidUser();
-        userController.createUser(newUser);
-        assertThat(userController.getUserById(Long.valueOf(893472)).equals(newUser));
-    }
-
-    @Test
-    void ListUsers_Success() throws Exception {
-        List<User> userList = new ArrayList<>();
-        given(userRespository.findAll()).willReturn(userList);
-        ResponseEntity returnedUsers = userController.ListUsers();
-        then(userRespository).should().findAll();
-        assertThat(returnedUsers).isNotNull();
-
-    }
-
-    @Test
-    void getUserById() {
-        User newUser = getValidUser();
-        userController.createUser(newUser);
-        assertThat(userController.getUserById(ApptID).equals(newUser));
-    }
-    @Test
-    void getUserByEId() {
-        User newUser = getValidUser();
-        userController.createUser(newUser);
-        assertThat(userController.getUserByEId("JsMith@gmail.com").equals(newUser));
-    }
-
-    @Test
-    void deleteUser() {
-        User newUser = getValidUser();
-        userController.createUser(newUser);
-        assertThat(userController.getUserById(ApptID).equals(newUser));
-        Long newUserID = newUser.getUserID();
-        userController.deleteUser(ApptID);
-        assertThat(userRespository.isEmpty());
-    }
+//
+//
+//    User getValidUser() {
+//        return User.builder()
+//                .userID(ApptID)
+//                .emailID("JsMith@gmail.com")
+//                .firstName("Jake")
+//                .lastName("Smith")
+//                .age("22")
+//                .gender("Male")
+//                .phoneNumber("2345432453")
+//                .build();
+//    }
+//
+//    List<User> getValidUserList() {
+//        List<User> usersList = new ArrayList<>();
+//        usersList.add(getValidUser());
+//        usersList.add(getValidUser());
+//        return usersList;
+//    }
+//
+//    @BeforeEach
+//    void setUp() {
+//
+//    }
+//
+//    @Test
+//    void createUser() {
+//        User newUser = getValidUser();
+//        userController.createUser(newUser);
+//        assertThat(userController.getUserById(Long.valueOf(893472)).equals(newUser));
+//    }
+//
+//    @Test
+//    void ListUsers_Success() throws Exception {
+//        List<User> userList = new ArrayList<>();
+//        given(userRespository.findAll()).willReturn(userList);
+//        ResponseEntity returnedUsers = userController.ListUsers();
+//        then(userRespository).should().findAll();
+//        assertThat(returnedUsers).isNotNull();
+//
+//    }
+//
+//    @Test
+//    void getUserById() {
+//        User newUser = getValidUser();
+//        userController.createUser(newUser);
+//        assertThat(userController.getUserById(ApptID).equals(newUser));
+//    }
+//    @Test
+//    void getUserByEId() {
+//        User newUser = getValidUser();
+//        userController.createUser(newUser);
+//        assertThat(userController.getUserByEId("JsMith@gmail.com").equals(newUser));
+//    }
+//
+//    @Test
+//    void deleteUser() {
+//        User newUser = getValidUser();
+//        userController.createUser(newUser);
+//        assertThat(userController.getUserById(ApptID).equals(newUser));
+//        Long newUserID = newUser.getUserID();
+//        userController.deleteUser(ApptID);
+//        assertThat(userRespository.isEmpty());
+//    }
 
 }

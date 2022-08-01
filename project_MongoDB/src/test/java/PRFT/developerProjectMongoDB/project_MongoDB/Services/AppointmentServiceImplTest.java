@@ -2,6 +2,7 @@ package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import PRFT.developerProjectMongoDB.project_MongoDB.web.controller.AppointmentController;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -98,26 +100,53 @@ class AppointmentServiceImplTest {
 
     @Test
     void userExists() {
+        appointmentRespository.deleteAll();
+        assertThat(appointmentService.userExists("Sid@gmail.com")).isEqualTo(false);
     }
 
     @Test
     void deleteUserAppointments() {
+        User user = getValidUser();
+        User save = this.repository.save(user);
+        ResponseEntity.ok(save);
+        AppointmentDTO appointment = getValidAppt();
+        AppointmentDTO save2 = this.appointmentRespository.save(appointment);
+        ResponseEntity.ok(save2);
+        String EID  = user.getEmailID();
+        appointmentService.deleteUserAppointments(EID);
+        assertThat(appointmentService.userExists(EID)).isEqualTo(false);
     }
 
     @Test
     void deleteAppointments() {
+        this.appointmentController.createAppointment(getValidAppt());
+        this.appointmentController.createAppointment(getValidAppt());
+        List<Long> AList = new ArrayList<>();
+        AList.add(getValidAppt().getAppointmentID());
+        AList.add(getValidAppt().getAppointmentID());
+        this.appointmentService.deleteAppointments(AList);
+        assertThat(appointmentService.userExists(getValidAppt().getUserEmail())).isFalse();
     }
 
     @Test
     void UUIDExists() {
+        this.appointmentRespository.deleteAll();
+        assertThat(this.appointmentService.UUIDExists(10L)).isFalse();
     }
 
     @Test
     void generateLong() {
+        Boolean ret = false;
+        Long X = this.appointmentService.generateLong();
+        if(X == (long)X){
+            ret = true;
+        }
+        assertThat(ret).isTrue();
     }
 
     @Test
     void findByApptID() {
+
     }
 
     @Test

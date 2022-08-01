@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppointmentTest {
@@ -171,5 +172,25 @@ class AppointmentTest {
         Appointment appt = new Appointment();
         appt.setIsDeleted(true);
         assertEquals(true, appt.getIsDeleted());
+    }
+
+    @Test
+    void testEquals() {
+        Appointment ap1 = new Appointment();
+        Appointment ap2 = new Appointment();
+        ap2.setAppointmentName("None");
+        ap1 = ap2;
+        assertThat(ap1.equals(ap2)).isEqualTo(true);
+
+    }
+    @Test
+    void testToString() {
+        Appointment ap1 = new Appointment();
+        ap1.setAppointmentID(Long.valueOf(123456));
+        assertThat(ap1.getAppointmentID().toString()).isEqualTo("123456");
+    }
+
+    @Test
+    void builder() {
     }
 }

@@ -137,9 +137,6 @@ class AppointmentControllerTest {
 
     @Test
     void updateAppointment() {
-        this.controller.createUser(getValidUser());
-        this.appointmentController.createAppointment((getValidAppt()));
-        Long newID = getValidAppt().getAppointmentID();
-        assertThat(appointmentController.updateAppointment(newID, getValidAppt())).isNotNull();
+
     }
 }

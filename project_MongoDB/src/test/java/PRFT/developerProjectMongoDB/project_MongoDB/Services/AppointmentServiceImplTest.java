@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -155,5 +152,6 @@ class AppointmentServiceImplTest {
 
     @Test
     void updateUserAppointmentListViaEmail() {
+
     }
 }

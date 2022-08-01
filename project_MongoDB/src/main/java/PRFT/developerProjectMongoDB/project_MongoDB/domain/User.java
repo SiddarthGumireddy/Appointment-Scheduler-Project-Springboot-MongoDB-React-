@@ -28,4 +28,5 @@ public class User {
 
     private String emailID;
     private String phoneNumber;
+    private Boolean isDeleted;
 }

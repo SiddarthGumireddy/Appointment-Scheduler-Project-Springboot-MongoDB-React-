@@ -131,15 +131,15 @@ public class AppointmentController{
         return "Appointment with ID:"+id.toString()+"has been soft deleted.";
     }
 
-    @PutMapping("/UpdateAppointment/{id}")
-    public ResponseEntity<?> updateAppointment(@PathVariable() Long id,@RequestBody AppointmentDTO appointment) {
-        if (this.appointmentService.UUIDExists(id)) {
-            appointmentRespository.deleteById(id);
-            AppointmentDTO save = this.appointmentRespository.save(appointment);
-            return ResponseEntity.ok(save);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @PutMapping("/UpdateAppointment/{id}")
+//    public ResponseEntity<?> updateAppointment(@PathVariable() Long id,@RequestBody AppointmentDTO appointment) {
+//        if (this.appointmentService.UUIDExists(id)) {
+//            appointmentRespository.deleteById(id);
+//            AppointmentDTO save = this.appointmentRespository.save(appointment);
+//            return ResponseEntity.ok(save);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 
     public ResponseEntity<?> updateHelper(Long id, String key, String value){
         if (this.appointmentService.UUIDExists(id)) {

@@ -25,5 +25,6 @@ public class UserDTO implements Serializable {
     @NotEmpty(message = "Email cannot be empty")
     private String emailID;
     private String phoneNumber;
+    private boolean isDeleted;
 
 }

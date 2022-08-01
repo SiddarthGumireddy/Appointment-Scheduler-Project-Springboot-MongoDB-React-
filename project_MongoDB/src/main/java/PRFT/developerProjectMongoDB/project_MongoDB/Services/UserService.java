@@ -10,12 +10,17 @@ public interface UserService {
     Boolean userExists(String emailID);
 
     void deleteUserAppointments(String emailID);
+
     User findByUserID(Long id);
+
     String getEmailfromID(Long id);
+
     Long generateLong();
 
 
     boolean UUIDExists(Long id);
+
+    void userUpdateHelper(Long id, String s, String s1);
 
     User findByEmail(String id);
 }

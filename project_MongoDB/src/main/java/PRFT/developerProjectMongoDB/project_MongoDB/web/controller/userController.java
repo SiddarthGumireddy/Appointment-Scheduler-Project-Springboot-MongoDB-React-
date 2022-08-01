@@ -32,16 +32,11 @@ public class userController{
     private UserService service;
 
     @Autowired
-    private AppointmentRespository appointmentRespository;
-    @Autowired
     private AppointmentService appointmentService;
-
-
-@Autowired
-    private AppointmentServiceImpl appointmentServiceImpl;
-
+    @Autowired
+    private AppointmentRespository appointmentRespository;
     @PostMapping("/addUser")
-//Add an Appointment to the DB
+
     public ResponseEntity<?> createUser(@RequestBody User user) {
         if (service.userExists(user.getEmailID())){
             return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
@@ -58,6 +53,14 @@ public class userController{
             return new ResponseEntity("No Users exist",HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(this.repository.findAll());
+//        List<User> UserResults = null;
+//        for(User user:AllUsers){
+//            if(!user.getIsDeleted()){
+//                assert false;
+//                UserResults.add(user);
+//            }
+//        }
+//        return ResponseEntity.ok(UserResults);
     }
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
@@ -90,17 +93,32 @@ public class userController{
         }
         return "Invalid User ID, Please Try Again!";
     }
-//    @GetMapping("/getUserAppointments/{emailID}")
-//    public List<Appointment> getUserAppointments(String emailID){
-//        List<Appointment> usersAppointments = new ArrayList<>();
-//        List<Appointment> AllAppointments = appointmentRespository.findAll();
-//        for (Appointment newOne : AllAppointments) {
-//            if (newOne.getUserEmail().equals(emailID)) {
-//                usersAppointments.add(newOne);
-//            }
-//        }
-//        return (List<Appointment>) ResponseEntity.ok(usersAppointments);
-//    }
+    @DeleteMapping("/SoftDelete/{id}") //Soft Delete User via ID
+    public String softDeleteUser(@PathVariable Long id) {
+        User user = service.findByUserID(id);
+        if (user == null) {
+            return "User doesn't exist, please enter a valid ID";
+        }
+        user.setIsDeleted(true);
+        repository.save(user);
+        return "User with ID:"+id.toString()+" has been soft deleted!";
+    }
+    @GetMapping("/getUserAppointments/{emailID}")
+    public ResponseEntity<?> getUserAppointments(String emailID){
+        if(service.userExists(emailID)) {
+            List<AppointmentDTO> usersAppointments = new ArrayList<>();
+            List<AppointmentDTO> AllAppointments = appointmentRespository.findAll();
+            for (AppointmentDTO newOne : AllAppointments) {
+                if (newOne.getUserEmail().equals(emailID)) {
+                    usersAppointments.add(newOne);
+                }
+            }
+            return ResponseEntity.ok(usersAppointments);
+        }
+        else{
+           return new ResponseEntity<>("Invalid Email Address, Please try again with a valid email.",HttpStatus.NOT_FOUND);
+        }
+    }
     public ResponseEntity<?> updateUserAppointments(List<Appointment> appointmentList, String Email){
         if(appointmentList.size()!=0){
             for(Appointment currentAppt:appointmentList){
@@ -167,7 +185,7 @@ public class userController{
 
     @PutMapping("/Update/{id}/{userkeys}/{uservalues}")
     public ResponseEntity<?> updateUser(@PathVariable() Long id, @PathVariable() String userkeys,
-                                                @PathVariable() String uservalues) {
+                                        @PathVariable() String uservalues) {
         List<String> keys = List.of(userkeys.split(","));
         List<String> values = List.of(uservalues.split(","));
         if (keys.size() == values.size()) {
@@ -180,38 +198,4 @@ public class userController{
             return new ResponseEntity<>("The size of keys and values aren't the same, please try again.", HttpStatus.BAD_REQUEST);
         }
     }
-//    @PutMapping("/UpdateDyn/{id}/{userkeys}/{uservalues}")
-//    public ResponseEntity<?> updateUser2(@PathVariable() Long id, @PathVariable() String userkeys, @PathVariable() String uservalues) {
-////        List<String> keys = List.of(userkeys.split(","));
-////        List<String> values = List.of(uservalues.split(","));
-//        if (this.service.UUIDExists(id)) {
-//            User currentUser = this.service.findByUserID(id);
-//            User updatedUser = this.repository.save(currentUser);
-//            int i = 0;
-//            while (i < keys.size()) {
-//                if (keys.get(i).equals("emailID")) {
-//                    currentUser.setEmailID(values.get(i));
-//                    List UserAppointmentList = this.service.getUserAppointments(values.get(i));
-//                    if (UserAppointmentList.size() != 0) {
-//                        service.updateUserAppointmentListViaEmail(UserAppointmentList, values.get(i));}
-//                } else if (keys.get(i).equals("firstName")) {
-//                    currentUser.setFirstName(values.get(i));
-//                } else if (keys.get(i).equals("lastName")) {
-//                    currentUser.setLastName(values.get(i));
-//                } else if (keys.get(i).equals("age")) {
-//                    currentUser.setAge(values.get(i));
-//                } else if (keys.get(i).equals("gender")) {
-//                    currentUser.setGender(values.get(i));
-//                } else if (keys.get(i).equals("phoneNumber")) {
-//                    currentUser.setPhoneNumber(values.get(i));
-//                } else {
-//                    return new ResponseEntity<>("enter valid user key for whose " +
-//                            "value you would like to update", HttpStatus.BAD_REQUEST);
-//                }
-//                i++;
-//            }
-//            return ResponseEntity.ok(updatedUser);
-//        }
-//        return new ResponseEntity<>("User ID does not exist", HttpStatus.NOT_FOUND);
-//    }
 }

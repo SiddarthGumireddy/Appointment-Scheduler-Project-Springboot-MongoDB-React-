@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.intellij.lang.annotations.Pattern;
+
 
 //import javax.validation.constraints.Pattern;
 import java.io.Serializable;

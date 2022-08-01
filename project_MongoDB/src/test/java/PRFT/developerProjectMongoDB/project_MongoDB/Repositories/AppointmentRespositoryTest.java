@@ -2,8 +2,8 @@ package PRFT.developerProjectMongoDB.project_MongoDB.Repositories;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.controller.AppointmentController;
 import PRFT.developerProjectMongoDB.project_MongoDB.controller.userController;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,8 +2,9 @@ package PRFT.developerProjectMongoDB.project_MongoDB.controller;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentRespository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.Appointment;
-import PRFT.developerProjectMongoDB.project_MongoDB.model.User;
+import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
+import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentServiceImpl;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,19 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class userController{
     @Autowired
     private UserRepository repository;
 
     @Autowired
     private AppointmentRespository appointmentRespository;
+
+@Autowired
+    private AppointmentService appointmentService;
+
+@Autowired
+    private AppointmentServiceImpl appointmentServiceImpl;
 
     @PostMapping("/addUser")
 //Add an Appointment to the DB
@@ -70,60 +77,45 @@ public class userController{
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id){
         if (this.repository.UUIDExists(id)) {
-
             String emailID = (repository.getEmailfromID(id));
-            appointmentRespository.deleteUserAppointments(emailID);
+            this.appointmentService.deleteUserAppointments(emailID);
             repository.deleteById(id);
             return "User with UserID:" + id + ", and their appointments have been deleted!";
         }
         return "Invalid User ID, Please Try Again!";
     }
-    @PutMapping("/Update/{id}/{key}/{value}")
-    public ResponseEntity<?> updateUser(@PathVariable() Long id, @PathVariable() String key, @PathVariable() String value) {
+    @PutMapping("/UpdateDyn/{id}/{userkeys}/{uservalues}")
+    public ResponseEntity<?> updateUser2(@PathVariable() Long id, @PathVariable() String userkeys, @PathVariable() String uservalues) {
+        List<String> keys = List.of(userkeys.split(","));
+        List<String> values = List.of(uservalues.split(","));
         if (this.repository.UUIDExists(id)) {
             User currentUser = this.repository.findByUserID(id);
-            if (key.equals("emailID")){
-                if (this.repository.userExists(value)){
-                    currentUser.setEmailID(value);
-                    User updatedUser = this.repository.save(currentUser);
-                    List UserAppointmentList=this.appointmentRespository.getUserAppointments(value);
-                    appointmentRespository.updateUserAppointmentListViaEmail(UserAppointmentList,value);
-                    return ResponseEntity.ok(updatedUser);
+            User updatedUser = this.repository.save(currentUser);
+            int i = 0;
+            while (i < keys.size()) {
+                if (keys.get(i).equals("emailID")) {
+                    currentUser.setEmailID(values.get(i));
+                    List UserAppointmentList = this.appointmentService.getUserAppointments(values.get(i));
+                    if (UserAppointmentList.size() != 0) {
+                        appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList, values.get(i));}
+                } else if (keys.get(i).equals("firstName")) {
+                    currentUser.setFirstName(values.get(i));
+                } else if (keys.get(i).equals("lastName")) {
+                    currentUser.setLastName(values.get(i));
+                } else if (keys.get(i).equals("age")) {
+                    currentUser.setAge(values.get(i));
+                } else if (keys.get(i).equals("gender")) {
+                    currentUser.setGender(values.get(i));
+                } else if (keys.get(i).equals("phoneNumber")) {
+                    currentUser.setPhoneNumber(values.get(i));
+                } else {
+                    return new ResponseEntity<>("enter valid user key for whose " +
+                            "value you would like to update", HttpStatus.BAD_REQUEST);
                 }
-                else{
-                    return new ResponseEntity<>("User Email does not exist", HttpStatus.BAD_REQUEST);
-                }
+                i++;
             }
-            else if(key.equals("firstName")){
-                currentUser.setFirstName(value);
-                User updatedUser = this.repository.save(currentUser);
-                return ResponseEntity.ok(updatedUser);
-            }
-            else if(key.equals("lastName")){
-                currentUser.setLastName(value);
-                User updatedUser = this.repository.save(currentUser);
-                return ResponseEntity.ok(updatedUser);
-            }
-            else if(key.equals("age")){
-                currentUser.setAge(value);
-                User updatedUser = this.repository.save(currentUser);
-                return ResponseEntity.ok(updatedUser);
-            }
-            else if(key.equals("gender")){
-                currentUser.setGender(value);
-                User updatedUser = this.repository.save(currentUser);
-                return ResponseEntity.ok(updatedUser);
-            }
-            else if(key.equals("phoneNumber")){
-                currentUser.setPhoneNumber(value);
-                User updatedUser = this.repository.save(currentUser);
-                return ResponseEntity.ok(updatedUser);
-            }
-            else{
-                return new ResponseEntity<>("enter valid user key for whose " +
-                        "value you would like to update", HttpStatus.BAD_REQUEST);
-            }
+            return ResponseEntity.ok(updatedUser);
         }
-        return new ResponseEntity<>("User ID does not exist",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("User ID does not exist", HttpStatus.NOT_FOUND);
     }
 }

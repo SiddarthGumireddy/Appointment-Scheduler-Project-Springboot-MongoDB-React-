@@ -1,10 +1,7 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.model;
 
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 

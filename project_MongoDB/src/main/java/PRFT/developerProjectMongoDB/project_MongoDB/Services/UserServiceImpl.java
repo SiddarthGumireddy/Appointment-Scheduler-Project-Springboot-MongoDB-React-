@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -50,77 +51,18 @@ public class UserServiceImpl implements UserService {
         return found;
     }
 
-    @Override
-    public void deleteUserAppointments(String emailID) {
-
-    }
-
-    public void userUpdateHelper(Long id, String key, String value){
-        if (this.appointmentService.UUIDExists(id)) {
-            User toUpdate = this.service.findByUserID(id);
-
-            if(key.equals("emailID")){
-                String OGEmail = toUpdate.getEmailID();
-                toUpdate.setEmailID(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                if(this.appointmentService.isEmpty()==false) {
-                    List<AppointmentDTO> UserAppointmentList = this.appointmentService.getUserAppointments(OGEmail);
-                    appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList, value);
-                    ResponseEntity.ok(toUpdate2);
-                }
-                return;
-            }
-            else if(key.equals("firstName")){
-                toUpdate.setFirstName(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
-            else if(key.equals("lastName")){
-                toUpdate.setLastName(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
-            else if(key.equals("age")){
-                toUpdate.setAge(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
-            else if(key.equals("gender")){
-                toUpdate.setGender(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
-            else if(key.equals("phoneNumber")){
-                toUpdate.setPhoneNumber(value);
-                User toUpdate2 = this.repository.save(toUpdate);
-                ResponseEntity.ok(toUpdate2);
-                return;
-            }
-
-            else{
-                new ResponseEntity<>("enter valid key for the respective " +
-                        "value you would like to update", HttpStatus.BAD_REQUEST);
-                return;
-            }
-        }
-        new ResponseEntity<>("User ID does not exist, Please enter a valid one.", HttpStatus.NOT_FOUND);
-    }
 
 
     @Override
     public User findByEmail(String emailID) {
         List<User> AllUsers = repository.findAll();
-        List<User> returnedUsers = new ArrayList<>();
         for (User user : AllUsers) {
             if (user.getEmailID().equals(emailID)) {
-                returnedUsers.add(user);
+                return user;
             }
         }
-        return (User) returnedUsers;
+        System.out.print("User doesn't exist with this emailID");
+        return null;
     }
 
 
@@ -147,6 +89,36 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    public User userUpdateHelper(Long id, User user) {
+        if (UUIDExists(id)) {
+            user.setUserID(id);
+            Optional<User> current = repository.findById(id);
+            String currentEmail = current.get().getEmailID();
+            String currentAge = current.get().getAge();
+            String currenFirstName = current.get().getFirstName();
+            String currentLastName = current.get().getLastName();
+            String currentPhone = current.get().getPhoneNumber();
+            Boolean currentIsDeleted = current.get().getIsDeleted();
+            String currentGender = current.get().getGender();
+            if (user.getAge() == null) user.setAge(currentAge);
+            if (user.getIsDeleted() == null) user.setIsDeleted(currentIsDeleted);
+            if (user.getGender() == null) user.setGender(currentGender);
+            if (user.getFirstName() == null) user.setFirstName(currenFirstName);
+            if (user.getLastName() == null) user.setLastName(currentLastName);
+            if (user.getPhoneNumber() == null) user.setPhoneNumber(currentPhone);
+            if (user.getEmailID() == null) {
+                user.setEmailID(currentEmail);
+            }
+            if (!this.appointmentService.isEmpty()) {
+                List<AppointmentDTO> UserAppointmentList = this.appointmentService.getUserAppointments(currentEmail);
+                appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList, user.getEmailID());
+
+                return user;
+            }
+        }
+        return null;
+    }
+
     public String getEmailfromID(Long id) {
         List<User> AllUsers = this.repository.findAll();
         for (User user : AllUsers) {
@@ -155,6 +127,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return "User does not exist";
-    }
-}
+                }
+            }
 

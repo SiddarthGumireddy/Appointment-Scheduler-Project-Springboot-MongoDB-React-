@@ -9,8 +9,6 @@ public interface UserService {
 
     Boolean userExists(String emailID);
 
-    void deleteUserAppointments(String emailID);
-
     User findByUserID(Long id);
 
     String getEmailfromID(Long id);
@@ -20,7 +18,8 @@ public interface UserService {
 
     boolean UUIDExists(Long id);
 
-    void userUpdateHelper(Long id, String s, String s1);
 
     User findByEmail(String id);
+
+    User userUpdateHelper(Long id, User user);
 }

@@ -4,6 +4,7 @@ import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.AppointmentResp
 import PRFT.developerProjectMongoDB.project_MongoDB.Repositories.UserRepository;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.AppointmentService;
 import PRFT.developerProjectMongoDB.project_MongoDB.Services.UserService;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -213,5 +214,17 @@ public class AppointmentController{
         else{
             return new ResponseEntity<>("keys and values sizes don't match", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping("/UpdateNew/{id}")
+    public ResponseEntity<?> updateApptNew(@PathVariable() Long id, @RequestBody AppointmentDTO appointment) {
+        appointment =this.appointmentService.appointmentUpdateHelper(id,appointment);
+        if (appointment != null) {
+            AppointmentDTO newAppointment = this.appointmentRespository.save(appointment);
+            ResponseEntity.ok(newAppointment);
+            return ResponseEntity.ok(appointment);
+        }
+        return new ResponseEntity<>("Appointment doesn't exist or given email does not " +
+                "correspond to any user", HttpStatus.NOT_FOUND);
     }
 }

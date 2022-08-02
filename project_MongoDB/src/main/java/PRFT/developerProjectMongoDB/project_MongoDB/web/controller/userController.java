@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,6 @@ public class userController{
     private UserRepository repository;
     @Autowired
     private UserService service;
-
     @Autowired
     private AppointmentService appointmentService;
     @Autowired
@@ -128,74 +128,105 @@ public class userController{
         }
         return new ResponseEntity<>("There are no appointments associated with this Email Address.", HttpStatus.BAD_REQUEST);
     }
-    public void userUpdateHelper(Long id, String key, String value){
+    public void userUpdateHelper(Long id, String key, String value) {
         if (this.service.UUIDExists(id)) {
+
             User toUpdate = this.service.findByUserID(id);
 
-            if(key.equals("emailID")){
+
+            if (key.equals("emailID")) {
+
                 String OGEmail = toUpdate.getEmailID();
                 toUpdate.setEmailID(value);
                 User toUpdate2 = this.repository.save(toUpdate);
-                if(this.appointmentService.isEmpty()==false) {
+
+
+                if (!this.appointmentService.isEmpty()) {
+
                     List<AppointmentDTO> UserAppointmentList = this.appointmentService.getUserAppointments(OGEmail);
+
                     appointmentService.updateUserAppointmentListViaEmail(UserAppointmentList, value);
+
                     ResponseEntity.ok(toUpdate2);
+
                 }
+
                 return;
-            }
-            else if(key.equals("firstName")){
+
+            } else if (key.equals("firstName")) {
+
                 toUpdate.setFirstName(value);
+
                 User toUpdate2 = this.repository.save(toUpdate);
+
                 ResponseEntity.ok(toUpdate2);
+
                 return;
-            }
-            else if(key.equals("lastName")){
+
+            } else if (key.equals("lastName")) {
+
                 toUpdate.setLastName(value);
+
                 User toUpdate2 = this.repository.save(toUpdate);
+
                 ResponseEntity.ok(toUpdate2);
+
                 return;
-            }
-            else if(key.equals("age")){
+
+            } else if (key.equals("age")) {
+
                 toUpdate.setAge(value);
+
                 User toUpdate2 = this.repository.save(toUpdate);
+
                 ResponseEntity.ok(toUpdate2);
+
                 return;
-            }
-            else if(key.equals("gender")){
+
+            } else if (key.equals("gender")) {
+
                 toUpdate.setGender(value);
+
                 User toUpdate2 = this.repository.save(toUpdate);
+
                 ResponseEntity.ok(toUpdate2);
+
                 return;
-            }
-            else if(key.equals("phoneNumber")){
+
+            } else if (key.equals("phoneNumber")) {
+
                 toUpdate.setPhoneNumber(value);
+
                 User toUpdate2 = this.repository.save(toUpdate);
+
                 ResponseEntity.ok(toUpdate2);
-                return;
-            }
 
-            else{
+                return;
+
+            } else {
+
                 new ResponseEntity<>("enter valid key for the respective " +
-                        "value you would like to update", HttpStatus.BAD_REQUEST);
-                return;
-            }
-        }
-        new ResponseEntity<>("User ID does not exist, Please enter a valid one.", HttpStatus.NOT_FOUND);
-    }
 
-    @PutMapping("/Update/{id}/{userkeys}/{uservalues}")
-    public ResponseEntity<?> updateUser(@PathVariable() Long id, @PathVariable() String userkeys,
-                                        @PathVariable() String uservalues) {
-        List<String> keys = List.of(userkeys.split(","));
-        List<String> values = List.of(uservalues.split(","));
-        if (keys.size() == values.size()) {
-            for (int i = 0; i < keys.size(); i++){
-                userUpdateHelper(id,keys.get(i), values.get(i));
+                        "value you would like to update", HttpStatus.BAD_REQUEST);
+
+                return;
+
             }
-            return ResponseEntity.ok("User Updated");
+
         }
-        else{
-            return new ResponseEntity<>("The size of keys and values aren't the same, please try again.", HttpStatus.BAD_REQUEST);
-        }
+
+        new ResponseEntity<>("User ID does not exist, Please enter a valid one.", HttpStatus.NOT_FOUND);
+
+    }
+    @PutMapping("/Update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable() Long id, @RequestBody User user) {
+        user=this.service.userUpdateHelper(id,user);
+        if (user != null) {
+
+            User newuser = this.repository.save(user);
+            ResponseEntity.ok(newuser);
+            return ResponseEntity.ok(user);
+                }
+        return new ResponseEntity<>("User doesn't exist", HttpStatus.NOT_FOUND);
     }
 }

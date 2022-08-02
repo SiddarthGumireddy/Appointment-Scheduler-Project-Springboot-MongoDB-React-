@@ -1,6 +1,7 @@
 package PRFT.developerProjectMongoDB.project_MongoDB.Services;
 
 import PRFT.developerProjectMongoDB.project_MongoDB.domain.Appointment;
+import PRFT.developerProjectMongoDB.project_MongoDB.domain.User;
 import PRFT.developerProjectMongoDB.project_MongoDB.model.AppointmentDTO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -28,5 +29,7 @@ public interface AppointmentService {
     Long generateLong();
 
     AppointmentDTO findByApptID(Long id);
+
+    public AppointmentDTO appointmentUpdateHelper(Long id, AppointmentDTO appointment);
 
 }
